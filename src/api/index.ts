@@ -7,6 +7,16 @@ const instance = axios.create({
   },
 });
 
-export const getAll = () => instance.get<any>('/category/get');
+// todo: yapi konusulacak.
+export const findAll = async () => instance.get('/URL');
 
-export const getById = (id: string) => instance.get<any>(`/category/:${id}`);
+export const findById = async (id: string) => instance.get(`/URL/${id}`);
+
+export const create = async () => instance.post('/URL', 'PAYLOAD');
+
+export const update = async (id: string) =>
+  instance.put(`/URL/${id}`, 'PAYLOAD');
+
+export const deleteById = async (id: string) => instance.delete(`/URL/${id}`);
+
+export const deleteAll = async () => instance.delete('/URL');
