@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint '**/*.{ts,tsx}'",
-    "prettier": "prettier --write '**/*.{ts,tsx}'"
+    "prettier": "prettier --write '**/*.{ts,tsx}'",
+    "prepare": "husky install .husky"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.10",
