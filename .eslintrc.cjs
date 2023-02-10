@@ -53,5 +53,6 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'implicit-arrow-linebreak': ['off'],
   },
 };
