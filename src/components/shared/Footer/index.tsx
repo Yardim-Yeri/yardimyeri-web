@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Footer = () => (
-  <footer className="h-14 flex justify-center items-center gap-4 text-sm p-4 mt-6">
+  <footer className="h-14 flex justify-center items-center flex-col sm:flex-row gap-4 text-sm p-4 mt-6">
     <div>
       Geri Bildirim:
       <a

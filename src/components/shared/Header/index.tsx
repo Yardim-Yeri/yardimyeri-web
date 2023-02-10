@@ -15,7 +15,7 @@ const Header = () => (
         </Link>
       </div>
     </div>
-    <div className="flex justify-center items-center bg-[#fff3cd] text-[#664d03] h-14 text-sm font-normal">
+    <div className="flex justify-center items-center bg-[#fff3cd] text-[#664d03] h-14 text-sm font-normal text-center">
       Bu bir sosyal sorumluluk projesidir. Bilgileriniz KVKK güvencesiyle
       saklanmaktadır.
     </div>
