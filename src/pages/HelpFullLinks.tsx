@@ -1,7 +1,6 @@
-import React from 'react';
 import PageTitle from '../components/shared/PageTitle';
 import Layout from '../components/shared/Layout';
-import { helpFullLinks } from '../mocks/helpFullLinks';
+import helpFullLinks from '../mocks/helpFullLinks';
 
 const HelpFullLinks = () => (
   <Layout>

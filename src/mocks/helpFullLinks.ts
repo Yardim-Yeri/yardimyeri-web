@@ -1,4 +1,9 @@
-export const helpFullLinks = [
+interface IHelpFullLinks {
+  title: string;
+  description: string;
+  url: string;
+}
+const helpFullLinks: IHelpFullLinks[] = [
   {
     title: 'Afet Harita',
     description:
@@ -72,4 +77,4 @@ export const helpFullLinks = [
   },
 ];
 
-export const aa = null;
+export default helpFullLinks;
