@@ -1,13 +1,13 @@
 import React from 'react';
 import PageTitle from '../components/shared/PageTitle';
 import Layout from '../components/shared/Layout';
-import { yararliLinkler } from '../mocks/YararliLinkler';
+import { helpFullLinks } from '../mocks/helpFullLinks';
 
-const YararliLinkler = () => (
+const HelpFullLinks = () => (
   <Layout>
     <PageTitle title="Yararli Linkler" />
     <ol className=" border rounded-lg">
-      {yararliLinkler.map(({ title, description, url }, index) => (
+      {helpFullLinks.map(({ title, description, url }, index) => (
         <li
           className="border-b p-4"
           key={title}
@@ -28,4 +28,4 @@ const YararliLinkler = () => (
   </Layout>
 );
 
-export default YararliLinkler;
+export default HelpFullLinks;

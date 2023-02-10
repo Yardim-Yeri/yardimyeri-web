@@ -1,4 +1,4 @@
-export const yararliLinkler = [
+export const helpFullLinks = [
   {
     title: 'Afet Harita',
     description:
