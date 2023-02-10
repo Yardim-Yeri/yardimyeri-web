@@ -14,7 +14,7 @@ Yardimlasma platformu
 - tailwind css
 - react-leaflet
 
-## Ready to use
+## Documentations
 
 - https://headlessui.com/
 - https://tailwindcomponents.com/
