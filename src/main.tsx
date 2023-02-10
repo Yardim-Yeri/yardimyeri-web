@@ -2,6 +2,9 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
+import YardimBulabilirim from './pages/YardimdaBulabilirim';
+import YararliLinkler from './pages/YararliLinkler';
+
 import './App.css';
 
 const queryClient = new QueryClient();
@@ -15,8 +18,12 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: 'about',
-    element: <div>About</div>,
+    path: '/yardimda-bulunabilirim',
+    element: <YardimBulabilirim />,
+  },
+  {
+    path: '/yararli-linkler',
+    element: <YararliLinkler />,
   },
 ]);
 
