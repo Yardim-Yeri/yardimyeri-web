@@ -54,7 +54,7 @@ const RadioGroup: FC<IRadioGroupProps> = ({ items }) => {
     <RG
       value={selected}
       onChange={setSelected}
-      className="grid grid-cols-3 gap-2"
+      className="grid grid-cols-2 sm:grid-cols-3 gap-2"
     >
       {items.map((item) => (
         <RG.Option

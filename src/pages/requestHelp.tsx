@@ -47,7 +47,7 @@ const RequestHelp = () => {
         <h1 className="text-lg sm:text-4xl font-bold w-3/4 text-center leading-relaxed">
           YARDIM TALEBİM VAR
         </h1>
-        <div className="w-1/2 flex flex-col gap-4">
+        <div className="w-full flex flex-col gap-4">
           <Input
             name="name"
             placeholder="Adınız"
@@ -73,7 +73,7 @@ const RequestHelp = () => {
             onChange={handleChangeFields}
           />
           <Map />
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <Select items={city} />
             <Select
               items={city}
