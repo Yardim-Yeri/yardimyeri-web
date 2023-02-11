@@ -25,7 +25,7 @@ const NeedHelp = () => (
     </div>
     <div className="mt-6">
       <div className="flex flex-col md:flex-row border shadow-md p-4 rounded-md">
-        <div className="grid grid-cols-2 lg:grid-cols-4 flex-auto">
+        <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 flex-auto">
           <div className="m-2">
             <p className="font-bold">İSİM</p>
             <p>sercan</p>
@@ -50,15 +50,14 @@ const NeedHelp = () => (
             <p className="font-bold">TALEP TARİHİ</p>
             <p>10-02-2023 23:22</p>
           </div>
-          <div className="m-2">
-            <p className="font-bold">DURUMU</p>
-            <p>Yardim Bekliyor</p>
-          </div>
         </div>
-        <div className="flex justify-end md:justify-center items-center">
+        <div className="flex gap-2 justify-end sm:justify-center items-center">
+          <p className="bg-yellow-500 p-2 rounded-md text-white">
+            Yardim Bekliyor
+          </p>
           <Link
             to="/need-help/2323" // TODO
-            className="p-4 bg-blue-500 rounded-md text-white"
+            className="p-2 bg-blue-500 rounded-md text-white"
           >
             Detaylar
           </Link>
