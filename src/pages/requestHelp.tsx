@@ -1,12 +1,11 @@
 import { ChangeEvent, useState } from 'react';
-import { useQuery } from 'react-query';
-import SelectLocation from '../components/formElements/select/selectLocation';
-import { getProvinces } from '../api/location.service';
-import { getNeeds } from '../api/needs.service';
+import { useMutation, useQuery } from 'react-query';
+import { apiCall } from '../api';
 import Button from '../components/formElements/button';
 import Input from '../components/formElements/input';
 import InputPhone from '../components/formElements/input/inputPhone';
 import RadioGroup from '../components/formElements/radioGroup';
+import SelectLocation from '../components/formElements/select/selectLocation';
 import Map from '../components/map';
 import Layout from '../components/shared/Layout';
 
@@ -30,18 +29,29 @@ const RequestHelp = () => {
     apartment: '',
     address: '',
   });
-  const { data, isLoading } = useQuery('needs', getNeeds);
+  const { data, isLoading } = useQuery('needs', () =>
+    apiCall({
+      url: '/needs',
+      method: 'GET',
+    }),
+  );
+  const postForm = useMutation({
+    mutationFn: (payload: Fields) =>
+      apiCall({
+        method: 'POST',
+        url: '/send-help-form',
+        data: payload,
+      }),
+  });
 
   const onSubmit = () => {
-    console.log('onSubmit');
+    postForm.mutate(fields);
   };
 
   const handleChangeFields = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFields({ ...fields, [name]: value });
   };
-
-  console.log('change', fields);
 
   return (
     <Layout formLayout>
@@ -64,7 +74,7 @@ const RequestHelp = () => {
             {isLoading ? (
               <span>Loading...</span>
             ) : (
-              data && <RadioGroup items={data.result} />
+              data && <RadioGroup items={data} />
             )}
           </div>
           <Input

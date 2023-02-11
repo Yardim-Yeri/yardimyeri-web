@@ -1,6 +1,6 @@
 import { Icon } from 'leaflet';
 import { useCallback, useState } from 'react';
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { useGeolocationReducer } from '@/context/geolocation.context';
 import MarkerIcon from '../../assets/marker.svg';
 
@@ -13,8 +13,6 @@ const Map = () => {
     iconUrl: MarkerIcon,
     iconSize: [24, 24],
   });
-
-  console.log(positionState);
 
   const getLocation = useCallback(() => {
     const { geolocation } = navigator;
