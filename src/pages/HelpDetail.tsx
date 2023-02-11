@@ -1,13 +1,31 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import PageTitle from '../components/shared/PageTitle';
 import Layout from '../components/shared/Layout';
 import Modal from '../components/shared/Modal/Modal';
+import Input from '../components/formElements/input';
+import InputPhone from '../components/formElements/input/inputPhone';
+
+type Fields = {
+  name: string;
+  email: string;
+  phoneNumber: string;
+};
 
 const HelpDetail = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [fields, setFields] = useState<Fields>({
+    name: '',
+    email: '',
+    phoneNumber: '',
+  });
 
   const handleModalOpen = () => {
     setIsOpen(true);
+  };
+
+  const handleChangeFields = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFields({ ...fields, [name]: value });
   };
 
   return (
@@ -15,7 +33,7 @@ const HelpDetail = () => {
       <PageTitle title="Yardim Talebi Detayi" />
       <div className="flex justify-end">
         <div className="text-base font-bold bg-amber-300 p-4 rounded-lg">
-          Yardim Bekliyor!!
+          Yardim Bekliyor
         </div>
       </div>
       <div className="flex flex-col gap-4">
@@ -71,18 +89,16 @@ const HelpDetail = () => {
 
           <form className="mt-5">
             <div className="flex flex-col gap-6">
-              <input
+              <Input
                 name="name"
-                type="text"
                 placeholder="Adınız"
-                className="border-black border rounded-md p-4 w-full"
+                onChange={handleChangeFields}
               />
               <div>
-                <input
-                  name="name"
-                  type="text"
+                <Input
+                  name="email"
                   placeholder="E-Posta Adresiniz"
-                  className="border-black border rounded-md p-4 w-full"
+                  onChange={handleChangeFields}
                 />
                 <p className="text-gray-500 text-sm">
                   Bu alan zorunlu değildir. Ancak e-posta adresinizi girdiğiniz
@@ -91,11 +107,9 @@ const HelpDetail = () => {
                 </p>
               </div>
               <div>
-                <input
-                  name="name"
-                  type="text"
-                  placeholder="Telefon Numaranız"
-                  className="border-black border rounded-md p-4 w-full"
+                <InputPhone
+                  name="phoneNumber"
+                  onChange={handleChangeFields}
                 />
                 <p className="text-gray-500 text-sm">
                   Lütfen numaranızı başında sıfır olmadan girin.

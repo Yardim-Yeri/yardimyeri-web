@@ -1,17 +1,37 @@
-import { FC } from 'react';
+/* eslint-disable @typescript-eslint/indent */
+import { ChangeEvent, FC } from 'react';
 
 interface IInputProps {
   name: string;
   placeholder: string;
-  type?: 'text';
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  type?:
+    | 'text'
+    | 'email'
+    | 'tel'
+    | 'password'
+    | 'url'
+    | 'search'
+    | 'number'
+    | 'date'
+    | 'range'
+    | 'file';
 }
 
-const Input: FC<IInputProps> = ({ name, placeholder, type = 'text ' }) => (
+const Input: FC<IInputProps> = ({
+  name,
+  placeholder,
+  type = 'text',
+  onChange,
+  ...props
+}) => (
   <input
+    {...props}
     name={name}
     type={type}
     placeholder={placeholder}
     className="border-black border rounded-md p-4 w-full"
+    onChange={onChange}
   />
 );
 

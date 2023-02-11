@@ -4,12 +4,12 @@ module.exports = {
     es6: true,
   },
   extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:@typescript-eslint/recommended',
     'airbnb',
     'airbnb/hooks',
     'airbnb-typescript',
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
   overrides: [],
   parser: '@typescript-eslint/parser',
@@ -30,20 +30,7 @@ module.exports = {
         namedComponents: 'arrow-function',
       },
     ],
-    'object-curly-newline': [
-      'error',
-      {
-        ObjectExpression: 'always',
-        ObjectPattern: {
-          multiline: true,
-        },
-        ImportDeclaration: 'never',
-        ExportDeclaration: {
-          multiline: true,
-          minProperties: 3,
-        },
-      },
-    ],
+    'object-curly-newline': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -57,5 +44,6 @@ module.exports = {
     'react/jsx-one-expression-per-line': 'off',
     'implicit-arrow-linebreak': ['off'],
     'react/jsx-props-no-spreading': 'off',
+    '@typescript-eslint/indent': 'off',
   },
 };

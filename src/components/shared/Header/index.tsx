@@ -1,15 +1,24 @@
 import { Link } from 'react-router-dom';
+import GriefIcon from '../../../assets/grief.svg';
+import Logo from '../../../assets/logo.png';
 
 const Header = () => (
   <header>
     <div className="flex justify-between items-center h-14 px-4 text-base">
-      <div className="text-s sm:text-3xl">
-        <Link
-          to="/"
-          className="logo font-semibold"
-        >
-          YARDIMYERI.COM
+      <div className="text-s sm:text-3xl flex items-center gap-2">
+        <Link to="/">
+          <img
+            className="h-[24px]"
+            src={Logo}
+            alt="Yardımyeri.com"
+          />
         </Link>
+        <img
+          src={GriefIcon}
+          alt="Grief"
+          width={22}
+          height={22}
+        />
       </div>
       <div>
         <Link
