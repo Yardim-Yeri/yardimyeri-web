@@ -35,7 +35,7 @@ const Layout = ({ children, formLayout = false }: ILayout) => {
   return (
     <main className="flex flex-col min-h-screen ">
       <Header />
-      <main className={`container ${isFormLayout} mx-auto flex-grow p-4`}>
+      <main className={`container ${isFormLayout} mx-auto flex-grow p-2`}>
         {children}
       </main>
       <Footer />
