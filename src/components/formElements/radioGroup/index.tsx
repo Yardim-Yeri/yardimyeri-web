@@ -58,7 +58,7 @@ const RadioGroup: FC<IRadioGroupProps> = ({ items }) => {
     >
       {items.map((item) => (
         <RG.Option
-          key={item.name}
+          key={item.id}
           value={item}
           className={radioClassName}
         >
