@@ -4,10 +4,10 @@
 
 .logo {
   background: -webkit-linear-gradient(
-    50deg,
+    55deg,
     rgba(125, 217, 183, 1) 0%,
-    rgba(60, 6, 98, 1) 25%,
-    rgba(54, 5, 88, 1) 100%
+    rgba(72, 20, 108, 1) 25%,
+    rgba(72, 20, 108, 1) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
