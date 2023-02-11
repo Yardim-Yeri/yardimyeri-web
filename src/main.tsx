@@ -6,14 +6,17 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import './App.css';
 import Loader from './components/Loader';
 import routes from './router';
+import { GeolocationContextProvider } from './context/geolocation.context';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter(routes);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <QueryClientProvider client={queryClient}>
-    <Suspense fallback={<Loader />}>
-      <RouterProvider router={router} />
-    </Suspense>
+    <GeolocationContextProvider>
+      <Suspense fallback={<Loader />}>
+        <RouterProvider router={router} />
+      </Suspense>
+    </GeolocationContextProvider>
   </QueryClientProvider>,
 );
