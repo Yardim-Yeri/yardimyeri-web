@@ -12,3 +12,15 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+@layer components {
+  .pagination {
+    @apply flex gap-2;
+  }
+  .paginationActive a {
+    @apply bg-slate-200 !important;
+  }
+  .pagination li a {
+    @apply p-1 md:p-3 bg-slate-100 rounded-md hover:cursor-pointer hover:bg-slate-200;
+  }
+}
