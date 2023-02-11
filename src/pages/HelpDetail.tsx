@@ -1,9 +1,10 @@
 import { ChangeEvent, useState } from 'react';
-import PageTitle from '../components/shared/PageTitle';
-import Layout from '../components/shared/Layout';
-import Modal from '../components/shared/Modal/Modal';
+import Button from '../components/formElements/button';
 import Input from '../components/formElements/input';
 import InputPhone from '../components/formElements/input/inputPhone';
+import Layout from '../components/shared/Layout';
+import Modal from '../components/shared/Modal/Modal';
+import PageTitle from '../components/shared/PageTitle';
 
 type Fields = {
   name: string;
@@ -63,14 +64,10 @@ const HelpDetail = () => {
         </p>
       </div>
       <div className="flex justify-center mt-6">
-        {/* TODO: change it with button component!! */}
-        <button
-          type="button"
-          className="bg-green-600 rounded-lg text-white p-4 w-2/3"
+        <Button
+          label="Yardım Et"
           onClick={handleModalOpen}
-        >
-          Yardim Et
-        </button>
+        />
       </div>
       <Modal
         title="Yardım Başlatılacak!"
@@ -118,20 +115,20 @@ const HelpDetail = () => {
             </div>
           </form>
           <div className="mt-4 flex justify-end gap-3">
-            <button
-              type="button"
-              className="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            <Button
+              label="Vazgeç"
+              type="error"
+              size="small"
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            />
+            <Button
+              label="Yardımı Başlat"
+              type="success"
+              size="small"
               onClick={() => {}}
-            >
-              Vazgeç
-            </button>
-            <button
-              type="button"
-              className="inline-flex justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
-              onClick={() => {}}
-            >
-              Yardımı Başlat
-            </button>
+            />
           </div>
         </div>
       </Modal>
