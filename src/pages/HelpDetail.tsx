@@ -4,7 +4,7 @@ import Layout from '../components/shared/Layout';
 import Modal from '../components/shared/Modal/Modal';
 
 const HelpDetail = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleModalOpen = () => {
     setIsOpen(true);
