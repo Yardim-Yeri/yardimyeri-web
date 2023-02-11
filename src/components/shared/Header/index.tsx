@@ -3,8 +3,13 @@ import { Link } from 'react-router-dom';
 const Header = () => (
   <header>
     <div className="flex justify-between items-center h-14 px-4 text-base">
-      <div className="text-s sm:text-2xl">
-        <Link to="/">YARDIMYERI.COM</Link>
+      <div className="text-s sm:text-3xl">
+        <Link
+          to="/"
+          className="logo font-semibold"
+        >
+          YARDIMYERI.COM
+        </Link>
       </div>
       <div>
         <Link
