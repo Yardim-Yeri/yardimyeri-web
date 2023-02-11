@@ -1,5 +1,5 @@
-import PageTitle from '../components/shared/PageTitle';
 import Layout from '../components/shared/Layout';
+import PageTitle from '../components/shared/PageTitle';
 import helpFullLinks from '../mocks/helpFullLinks';
 
 const HelpFullLinks = () => (
