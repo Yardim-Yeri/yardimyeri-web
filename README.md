@@ -20,3 +20,4 @@ Yardimlasma platformu
 - https://tailwindcomponents.com/
 - https://www.bezkoder.com/react-typescript-api-call/
 - https://react-leaflet.js.org/
+- https://heroicons.com/
