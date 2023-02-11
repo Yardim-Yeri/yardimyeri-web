@@ -1,13 +1,14 @@
 import { ChangeEvent, useState } from 'react';
-import RadioGroup from '../components/formElements/radioGroup';
-import requestHelpType from '../mocks/requestHelpType';
-import Layout from '../components/shared/Layout';
-import Select from '../components/formElements/select';
-import city from '../mocks/city';
-import Map from '../components/map';
-import Input from '../components/formElements/input';
+import { useQuery } from 'react-query';
+import SelectLocation from '../components/formElements/select/selectLocation';
+import { getProvinces } from '../api/location.service';
+import { getNeeds } from '../api/needs.service';
 import Button from '../components/formElements/button';
+import Input from '../components/formElements/input';
 import InputPhone from '../components/formElements/input/inputPhone';
+import RadioGroup from '../components/formElements/radioGroup';
+import Map from '../components/map';
+import Layout from '../components/shared/Layout';
 
 type Fields = {
   name: string;
@@ -29,6 +30,7 @@ const RequestHelp = () => {
     apartment: '',
     address: '',
   });
+  const { data, isLoading } = useQuery('needs', getNeeds);
 
   const onSubmit = () => {
     console.log('onSubmit');
@@ -42,7 +44,7 @@ const RequestHelp = () => {
   console.log('change', fields);
 
   return (
-    <Layout>
+    <Layout formLayout>
       <div className="flex justify-center items-center flex-col gap-7">
         <h1 className="text-lg sm:text-4xl font-bold w-3/4 text-center leading-relaxed">
           YARDIM TALEBİM VAR
@@ -59,7 +61,11 @@ const RequestHelp = () => {
           />
           <div className="border border-black rounded-md p-4">
             <h4 className="font-semibold mb-4">İhtiyaç Türü</h4>
-            <RadioGroup items={requestHelpType} />
+            {isLoading ? (
+              <span>Loading...</span>
+            ) : (
+              data && <RadioGroup items={data.result} />
+            )}
           </div>
           <Input
             name="detail"
@@ -73,21 +79,7 @@ const RequestHelp = () => {
             onChange={handleChangeFields}
           />
           <Map />
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <Select items={city} />
-            <Select
-              items={city}
-              disabled
-            />
-            <Select
-              items={city}
-              disabled
-            />
-            <Select
-              items={city}
-              disabled
-            />
-          </div>
+          <SelectLocation />
           <Input
             name="apartment"
             placeholder="Apartman"

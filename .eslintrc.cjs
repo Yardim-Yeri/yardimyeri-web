@@ -23,6 +23,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react/require-default-props': 'off',
+    'import/prefer-default-export': 'off',
     'jsx-a11y/control-has-associated-label': 'off',
     'react/function-component-definition': [
       2,

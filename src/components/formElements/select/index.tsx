@@ -6,6 +6,7 @@ interface ISelectProps {
   items: {
     id: number;
     name: string;
+    key: number;
   }[];
   disabled?: boolean;
 }
