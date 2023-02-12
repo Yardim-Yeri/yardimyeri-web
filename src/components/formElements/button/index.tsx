@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 interface IButtonProps {
   label: string;
+  htmlType?: 'button' | 'submit' | 'reset';
   size?: 'small' | 'default' | 'large';
   type?: 'warning' | 'success' | 'info' | 'error' | 'default';
   onClick?: () => void;
@@ -9,6 +10,7 @@ interface IButtonProps {
 
 const Button: FC<IButtonProps> = ({
   label,
+  htmlType = 'button',
   size = 'default',
   type = 'default',
   onClick,
@@ -42,7 +44,7 @@ const Button: FC<IButtonProps> = ({
   return (
     <button
       className={`${buttonColor()} ${buttonSize()} rounded-md text-white`}
-      type="button"
+      type={htmlType}
       onClick={onClick}
     >
       {label}

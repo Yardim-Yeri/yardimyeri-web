@@ -10,7 +10,7 @@ type IInputPhoneProps = {
 const InputPhone: FC<IInputPhoneProps> = ({ name, onChange, placeholder }) => (
   <InputMask
     name={name}
-    mask="(999) 999 99 99"
+    mask="9999999999"
     onChange={onChange}
     placeholder={placeholder}
   >
