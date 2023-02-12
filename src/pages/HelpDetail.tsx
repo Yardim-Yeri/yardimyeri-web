@@ -1,6 +1,9 @@
-import { ChangeEvent, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
+import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
+import { Controller, useForm } from 'react-hook-form';
+import { AxiosError } from 'axios';
 import { IHelpListItem } from '@/models/helpList.model';
 import Button from '../components/formElements/button';
 import Input from '../components/formElements/input';
@@ -8,22 +11,46 @@ import InputPhone from '../components/formElements/input/inputPhone';
 import Layout from '../components/shared/Layout';
 import Modal from '../components/shared/Modal/Modal';
 import PageTitle from '../components/shared/PageTitle';
-import { getHelpsById } from '../api/help.service';
+import { getHelpsById, postHelperForm } from '../api/help.service';
+import { regexp } from '../utils/constants';
+import { IResponseType } from '@/models/general.model';
 
-type Fields = {
+type FormData = {
   name: string;
   email: string;
-  phoneNumber: string;
+  phone_number: string;
 };
 
 const HelpDetail = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [fields, setFields] = useState<Fields>({
-    name: '',
-    email: '',
-    phoneNumber: '',
-  });
   const { id } = useParams();
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<FormData>({
+    mode: 'onChange',
+  });
+  const formSendMutation = useMutation<
+    IResponseType,
+    AxiosError,
+    FormData,
+    string
+  >((payload) => postHelperForm(id, payload), {
+    onError: (error) => {
+      toast.error(
+        `(${error.response?.status}) ${error.response?.data?.message}`,
+      );
+    },
+    onSuccess: (data) => {
+      setIsOpen(false);
+      if (data && data.success) {
+        toast.success(data.message);
+      }
+      reset();
+    },
+  });
 
   const { data, isLoading } = useQuery<IHelpListItem>(
     ['helpById', id],
@@ -34,14 +61,13 @@ const HelpDetail = () => {
     setIsOpen(true);
   };
 
-  const handleChangeFields = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFields({ ...fields, [name]: value });
+  const onSubmit = (fields: FormData) => {
+    formSendMutation.mutate(fields);
   };
 
   return (
     <Layout>
-      <PageTitle title="Yardim Talebi Detayi" />
+      <PageTitle title="Yardım Talebi Detayı" />
       {!isLoading && (
         <>
           <div className="flex justify-end">
@@ -99,7 +125,7 @@ const HelpDetail = () => {
         setIsOpen={setIsOpen}
       >
         <div>
-          <p className="">
+          <p>
             Aşağıda bulunan bilgileri doldurduktan sonra yardımı
             başlatabilirsiniz.
           </p>
@@ -108,19 +134,49 @@ const HelpDetail = () => {
             bilgilerine ulaşabilirsiniz.
           </p>
 
-          <form className="mt-5">
+          <form
+            className="mt-5"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <div className="flex flex-col gap-6">
-              <Input
-                name="name"
-                placeholder="Adınız"
-                onChange={handleChangeFields}
-              />
               <div>
-                <Input
-                  name="email"
-                  placeholder="E-Posta Adresiniz"
-                  onChange={handleChangeFields}
+                <Controller
+                  name="name"
+                  control={control}
+                  rules={{
+                    required: 'Bu alan zorunludur.',
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      placeholder="Adınız"
+                    />
+                  )}
                 />
+                <span className="text-red-600 text-sm">
+                  {errors.name?.message}
+                </span>
+              </div>
+              <div>
+                <Controller
+                  name="email"
+                  control={control}
+                  rules={{
+                    pattern: {
+                      value: regexp.email,
+                      message: 'Doğru formatta bir mail giriniz.',
+                    },
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      placeholder="E-Posta Adresiniz"
+                    />
+                  )}
+                />
+                <span className="text-red-600 text-sm">
+                  {errors.email?.message}
+                </span>
                 <p className="text-gray-500 text-sm">
                   Bu alan zorunlu değildir. Ancak e-posta adresinizi girdiğiniz
                   takdirde yeni oluşan talepleri mail olarak sizlere
@@ -128,32 +184,43 @@ const HelpDetail = () => {
                 </p>
               </div>
               <div>
-                <InputPhone
-                  name="phoneNumber"
-                  onChange={handleChangeFields}
+                <Controller
+                  name="phone_number"
+                  control={control}
+                  rules={{
+                    required: 'Bu alan zorunludur.',
+                    pattern: {
+                      value: regexp.phoneNumber,
+                      message: 'Doğru formatta bir telefon numarası giriniz.',
+                    },
+                  }}
+                  render={({ field }) => <InputPhone {...field} />}
                 />
+                <span className="text-red-600 text-sm">
+                  {errors.phone_number?.message}
+                </span>
                 <p className="text-gray-500 text-sm">
                   Lütfen numaranızı başında sıfır olmadan girin.
                 </p>
               </div>
             </div>
+            <div className="mt-4 flex justify-end gap-3">
+              <Button
+                label="Vazgeç"
+                type="error"
+                size="small"
+                onClick={() => {
+                  setIsOpen(false);
+                }}
+              />
+              <Button
+                htmlType="submit"
+                label="Yardımı Başlat"
+                type="success"
+                size="small"
+              />
+            </div>
           </form>
-          <div className="mt-4 flex justify-end gap-3">
-            <Button
-              label="Vazgeç"
-              type="error"
-              size="small"
-              onClick={() => {
-                setIsOpen(false);
-              }}
-            />
-            <Button
-              label="Yardımı Başlat"
-              type="success"
-              size="small"
-              onClick={() => {}}
-            />
-          </div>
         </div>
       </Modal>
     </Layout>
