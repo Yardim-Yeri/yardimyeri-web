@@ -2,7 +2,7 @@ import React from 'react';
 
 interface IHelpCard {
   text: string;
-  count: number | string;
+  count: number | undefined;
   color: 'blue' | 'yellow' | 'green';
 }
 const HelpCard = ({ text, count, color }: IHelpCard) => {
