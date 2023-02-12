@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from 'react-query';
-import {
-  useLocation,
-  Link,
-  useNavigate,
-  useSearchParams,
-} from 'react-router-dom';
-import queryString from 'query-string';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { CheckIcon } from '@heroicons/react/24/solid';
 import { toast } from 'react-hot-toast';
 import { AxiosError } from 'axios';
@@ -24,9 +18,10 @@ interface ICaseResponseType {
 const Case = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { search } = useLocation();
+  const [query] = useSearchParams();
+  const id = query.get('id');
+
   const navigate = useNavigate();
-  const { id } = queryString.parse(search);
 
   const { data, isLoading } = useQuery<IHelpListItem>(
     ['caseById', id],
