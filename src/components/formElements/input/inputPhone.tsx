@@ -11,7 +11,7 @@ interface IInputPhoneProps {
 const InputPhone: FC<IInputPhoneProps> = ({ name, onChange }) => (
   <InputMask
     name={name}
-    mask="(999) 999 99 99"
+    mask="9999999999"
     onChange={onChange}
   >
     {(inputProps) => <Input {...inputProps} />}
