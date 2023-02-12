@@ -1,12 +1,15 @@
 import { RadioGroup as RG } from '@headlessui/react';
-import { FC, useState } from 'react';
+import { FC } from 'react';
+
+interface IRadioValues {
+  id: number;
+  label: string;
+}
 
 interface IRadioGroupProps {
-  items: {
-    id: number;
-    name: string;
-    label: string;
-  }[];
+  items: IRadioValues[];
+  value: any;
+  onChange: (value: IRadioValues) => void;
 }
 
 const CheckIcon = () => (
@@ -47,46 +50,42 @@ const radioClassName = ({
     checked ? 'bg-black text-white' : 'bg-white'
   } relative flex cursor-pointer rounded-md p-4 shadow-md focus:outline-none select-none`;
 
-const RadioGroup: FC<IRadioGroupProps> = ({ items }) => {
-  const [selected, setSelected] = useState(items[0]);
-
-  return (
-    <RG
-      value={selected}
-      onChange={setSelected}
-      className="grid grid-cols-2 sm:grid-cols-3 gap-2"
-    >
-      {items.map((item) => (
-        <RG.Option
-          key={item.id}
-          value={item}
-          className={radioClassName}
-        >
-          {({ checked }) => (
-            <div className="flex w-full items-center justify-between">
-              <div className="flex items-center">
-                <div className="text-sm">
-                  <RG.Label
-                    as="p"
-                    className={`font-medium  ${
-                      checked ? 'text-white' : 'text-gray-900'
-                    }`}
-                  >
-                    {item.label}
-                  </RG.Label>
-                </div>
+const RadioGroup: FC<IRadioGroupProps> = ({ items, value, onChange }) => (
+  <RG
+    value={value}
+    onChange={onChange}
+    className="grid grid-cols-2 sm:grid-cols-3 gap-2"
+  >
+    {items.map((item) => (
+      <RG.Option
+        key={item.id}
+        value={item}
+        className={radioClassName}
+      >
+        {({ checked }) => (
+          <div className="flex w-full items-center justify-between">
+            <div className="flex items-center">
+              <div className="text-sm">
+                <RG.Label
+                  as="p"
+                  className={`font-medium  ${
+                    checked ? 'text-white' : 'text-gray-900'
+                  }`}
+                >
+                  {item.label}
+                </RG.Label>
               </div>
-              {checked && (
-                <div className="shrink-0 text-white">
-                  <CheckIcon />
-                </div>
-              )}
             </div>
-          )}
-        </RG.Option>
-      ))}
-    </RG>
-  );
-};
+            {checked && (
+              <div className="shrink-0 text-white">
+                <CheckIcon />
+              </div>
+            )}
+          </div>
+        )}
+      </RG.Option>
+    ))}
+  </RG>
+);
 
 export default RadioGroup;

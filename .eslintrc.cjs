@@ -24,6 +24,7 @@ module.exports = {
     'react/prop-types': 'off',
     'react/require-default-props': 'off',
     'import/prefer-default-export': 'off',
+    'react/destructuring-assignment': 'off',
     'function-paren-newline': 'off',
     'jsx-a11y/control-has-associated-label': 'off',
     'react/function-component-definition': [

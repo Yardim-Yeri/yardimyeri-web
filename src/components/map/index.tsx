@@ -11,7 +11,7 @@ const Map = () => {
   const [positionState, setPositionState] = useState<LatLng>([41, 29]);
   const icon = new Icon({
     iconUrl: MarkerIcon,
-    iconSize: [24, 24],
+    iconSize: [32, 32],
   });
 
   const getLocation = useCallback(() => {

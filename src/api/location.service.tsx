@@ -1,21 +1,22 @@
+import { QueryFunctionContext } from 'react-query';
 import { instance } from '.';
 
 export const getProvinces = async () => {
   const response = await instance.get('/provinces');
-  return response.data;
+  return response.data.result;
 };
 
-export const getDistricts = async (provinceId: string) => {
-  const response = await instance.get(`/districts/${provinceId}`);
-  return response.data;
+export const getDistricts = async ({ queryKey }: QueryFunctionContext) => {
+  const response = await instance.get(`/districts/${queryKey[1]}`);
+  return response.data.result;
 };
 
-export const getNeighborhoods = async (districtId: string) => {
-  const response = await instance.get(`/neighborhoods/${districtId}`);
-  return response.data;
+export const getNeighborhoods = async ({ queryKey }: QueryFunctionContext) => {
+  const response = await instance.get(`/neighborhoods/${queryKey[1]}`);
+  return response.data.result;
 };
 
-export const getStreets = async (neighborhoodId: string) => {
-  const response = await instance.get(`/streets/${neighborhoodId}`);
-  return response.data;
+export const getStreets = async ({ queryKey }: QueryFunctionContext) => {
+  const response = await instance.get(`/streets/${queryKey[1]}`);
+  return response.data.result;
 };
