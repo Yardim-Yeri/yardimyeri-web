@@ -17,7 +17,7 @@ interface ICaseResponseType {
   message: string;
 }
 const Case = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { search } = useLocation();
   const navigate = useNavigate();
