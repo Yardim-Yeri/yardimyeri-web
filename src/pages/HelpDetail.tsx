@@ -160,12 +160,7 @@ const HelpDetail = () => {
                       message: 'Doğru formatta bir telefon numarası giriniz.',
                     },
                   }}
-                  render={({ field }) => (
-                    <InputPhone
-                      placeholder="Telefon Numaranız"
-                      {...field}
-                    />
-                  )}
+                  render={({ field }) => <InputPhone {...field} />}
                 />
                 <span className="text-red-600 text-sm">
                   {errors.phone_number?.message}

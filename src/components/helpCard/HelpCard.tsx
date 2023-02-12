@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface IHelpCard {
   text: string;
   count: number | undefined;

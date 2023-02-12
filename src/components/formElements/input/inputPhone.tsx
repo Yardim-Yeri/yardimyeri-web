@@ -1,21 +1,17 @@
 import { ChangeEvent, FC } from 'react';
 import InputMask from 'react-input-mask';
-import Input, { IInputProps } from '.';
 
 type IInputPhoneProps = {
-  value?: string;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-} & Pick<IInputProps, 'name' | 'onChange' | 'placeholder'>;
+};
 
-const InputPhone: FC<IInputPhoneProps> = ({ name, onChange, placeholder }) => (
+const InputPhone: FC<IInputPhoneProps> = ({ onChange }) => (
   <InputMask
-    name={name}
+    placeholder="Telefon numarası"
+    className="border-black border rounded-md p-4 w-full"
     mask="9999999999"
     onChange={onChange}
-    placeholder={placeholder}
-  >
-    {(inputProps) => <Input {...inputProps} />}
-  </InputMask>
+  />
 );
 
 export default InputPhone;

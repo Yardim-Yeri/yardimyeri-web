@@ -12,28 +12,29 @@ import {
   getStreets,
 } from '@/api/location.service';
 import Select from '.';
+import { ISelectValues } from '@/models/helpForm.model';
 
-interface ISelectValues {
-  province?: ISelectValues;
-  district?: ISelectValues;
-  neighborhood?: ISelectValues;
-  street?: ISelectValues;
+interface ISelectValuesState {
+  province_id: ISelectValues | undefined;
+  district_id: ISelectValues | undefined;
+  neighborhood_id: ISelectValues | undefined;
+  street_id: ISelectValues | undefined;
 }
 
 const SelectLocation = () => {
-  const defaultValue = { id: 0, name: 'Seciniz...' };
+  const defaultValue = { id: 0, name: 'Seçiniz...' };
   const {
     control,
     formState: { errors },
     clearErrors,
     setError,
     setValue,
-  } = useFormContext();
-  const [locationFields, setLocationFields] = useState<ISelectValues>({
-    province: undefined,
-    district: undefined,
-    neighborhood: undefined,
-    street: undefined,
+  } = useFormContext<ISelectValuesState>();
+  const [locationFields, setLocationFields] = useState<ISelectValuesState>({
+    province_id: undefined,
+    district_id: undefined,
+    neighborhood_id: undefined,
+    street_id: undefined,
   });
   const [, dispatchLocation] = useLocationReducer();
   const { data: provinceData, isLoading: provinceLoading } = useQuery(
@@ -42,60 +43,56 @@ const SelectLocation = () => {
   );
 
   const { data: districtsData } = useQuery(
-    ['districts', locationFields.province?.key],
+    ['districts', locationFields.province_id?.key],
     getDistricts,
     {
-      enabled: !!locationFields.province,
+      enabled: !!locationFields.province_id,
     },
   );
 
   const { data: neighborhoodsData } = useQuery(
-    ['neighborhoods', locationFields.district?.key],
+    ['neighborhoods', locationFields.district_id?.key],
     getNeighborhoods,
     {
-      enabled: !!locationFields.district,
+      enabled: !!locationFields.district_id,
     },
   );
 
   const { data: streetsData } = useQuery(
-    ['streets', locationFields.neighborhood?.key],
+    ['streets', locationFields.neighborhood_id?.key],
     getStreets,
     {
-      enabled: !!locationFields.neighborhood,
+      enabled: !!locationFields.neighborhood_id,
     },
   );
 
-  const handleProvinceChange = (selectValue: ISelectValues) => {
+  const handleProvinceChange = (selectValue: any) => {
     setLocationFields((prevState) => ({
       ...prevState,
-      street: undefined,
-      neighborhood: undefined,
-      district: undefined,
-      province: selectValue,
+      street_id: undefined,
+      neighborhood_id: undefined,
+      district_id: undefined,
+      province_id: selectValue,
     }));
     dispatchLocation({ type: 'SET_PROVINCE', payload: selectValue.key });
     setValue('province_id', selectValue.key);
     clearErrors('province_id');
-    [
-      {
-        name: 'district_id',
-        type: 'required',
-        message: 'Bu alan zorunludur.',
-      },
-      {
-        name: 'neighborhood_id',
-        type: 'required',
-        message: 'Bu alan zorunludur.',
-      },
-    ].forEach(({ name, type, message }) => setError(name, { type, message }));
+    setError('district_id', {
+      type: 'required',
+      message: 'Bu alan zorunludur.',
+    });
+    setError('neighborhood_id', {
+      type: 'required',
+      message: 'Bu alan zorunludur.',
+    });
   };
 
-  const handleDistrictChange = (selectValue: ISelectValues) => {
+  const handleDistrictChange = (selectValue: any) => {
     setLocationFields((prevState) => ({
       ...prevState,
-      street: undefined,
-      neighborhood: undefined,
-      district: selectValue,
+      street_id: undefined,
+      neighborhood_id: undefined,
+      district_id: selectValue,
     }));
     dispatchLocation({ type: 'SET_DISTRICT', payload: selectValue.key });
     setValue('district_id', selectValue.key);
@@ -106,18 +103,18 @@ const SelectLocation = () => {
     });
   };
 
-  const handleNeighborhoodChange = (selectValue: ISelectValues) => {
+  const handleNeighborhoodChange = (selectValue: any) => {
     setLocationFields((prevState) => ({
       ...prevState,
-      street: undefined,
-      neighborhood: selectValue,
+      street_id: undefined,
+      neighborhood_id: selectValue,
     }));
     dispatchLocation({ type: 'SET_NEIGHBORHOOD', payload: selectValue.key });
     setValue('neighborhood_id', selectValue.key);
     clearErrors('neighborhood_id');
   };
 
-  const handleStreetChange = (selectValue: ISelectValues) => {
+  const handleStreetChange = (selectValue: any) => {
     setLocationFields((prevState) => ({ ...prevState, street: selectValue }));
     dispatchLocation({ type: 'SET_STREET', payload: selectValue.id });
     setValue('street_id', selectValue.id);
@@ -141,7 +138,7 @@ const SelectLocation = () => {
                   <Select
                     {...field}
                     items={provinceData.data}
-                    value={locationFields.province || defaultValue}
+                    value={locationFields.province_id || defaultValue}
                     onChange={handleProvinceChange}
                   />
                   <span className="text-red-600 text-sm">
@@ -163,9 +160,9 @@ const SelectLocation = () => {
               <Select
                 {...field}
                 items={districtsData?.data}
-                value={locationFields.district || defaultValue}
+                value={locationFields.district_id || defaultValue}
                 onChange={handleDistrictChange}
-                disabled={!locationFields.province}
+                disabled={!locationFields.province_id}
               />
             )}
           />
@@ -184,9 +181,9 @@ const SelectLocation = () => {
               <Select
                 {...field}
                 items={neighborhoodsData?.data}
-                value={locationFields.neighborhood || defaultValue}
+                value={locationFields.neighborhood_id || defaultValue}
                 onChange={handleNeighborhoodChange}
-                disabled={!locationFields.district}
+                disabled={!locationFields.district_id}
               />
             )}
           />
@@ -202,9 +199,9 @@ const SelectLocation = () => {
               <Select
                 {...field}
                 items={streetsData?.data}
-                value={locationFields.street || defaultValue}
+                value={locationFields.street_id || defaultValue}
                 onChange={handleStreetChange}
-                disabled={!locationFields.neighborhood}
+                disabled={!locationFields.neighborhood_id}
               />
             )}
           />

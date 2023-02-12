@@ -8,7 +8,7 @@ import {
 } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
-import { IRadioValues } from '@/models/helpFrom.model';
+import { FormData, IRadioValues } from '@/models/helpForm.model';
 import { IResponseType } from '@/models/general.model';
 import { getNeeds } from '@/api/needs.service';
 import { postHelpForm } from '@/api/help.service';
@@ -20,22 +20,6 @@ import SelectLocation from '../components/formElements/select/selectLocation';
 import Map from '../components/map';
 import Layout from '../components/shared/Layout';
 import { regexp } from '../utils/constants';
-
-type FormData = {
-  name: string;
-  phone_number: string | null;
-  need_type: string | null;
-  need_type_detail?: string;
-  how_many_person: number | null;
-  apartment?: string;
-  for_directions?: string;
-  province_id: number | undefined;
-  district_id: number | undefined;
-  neighborhood_id: number | undefined;
-  street_id: number | undefined;
-  lat: number | null;
-  lng: number | null;
-};
 
 const RequestHelp = () => {
   const defaultValues = {
@@ -132,12 +116,7 @@ const RequestHelp = () => {
                     message: 'Doğru formatta bir telefon numarası giriniz.',
                   },
                 }}
-                render={({ field }) => (
-                  <InputPhone
-                    {...field}
-                    placeholder="Telefon Numaranız"
-                  />
-                )}
+                render={({ field }) => <InputPhone {...field} />}
               />
               <span className="text-red-600 text-sm">
                 {methods.formState.errors.phone_number?.message}

@@ -1,6 +1,6 @@
 import { RadioGroup as RG } from '@headlessui/react';
 import { FC } from 'react';
-import { IRadioValues } from '@/models/helpFrom.model';
+import { IRadioValues } from '@/models/helpForm.model';
 
 interface IRadioGroupProps {
   items: IRadioValues[];

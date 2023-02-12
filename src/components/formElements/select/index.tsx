@@ -1,17 +1,12 @@
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { FC, Fragment } from 'react';
-
-interface ISelectValues {
-  id: number;
-  name: string;
-  key?: number;
-}
+import { ISelectValues } from '@/models/helpForm.model';
 
 interface ISelectProps {
   items: ISelectValues[];
   value: any;
-  onChange: (value: ISelectValues) => void;
+  onChange?: (value?: ISelectValues) => void;
   disabled?: boolean;
 }
 
