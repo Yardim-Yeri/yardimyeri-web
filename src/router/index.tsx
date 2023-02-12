@@ -15,15 +15,15 @@ export default [
     element: <LazyHomePage />,
   },
   {
-    path: '/request-help',
+    path: '/yardim-talebim-var',
     element: <LazyRequestHelp />,
   },
   {
-    path: '/need-help',
+    path: '/yardimda-bulunabilirim',
     element: <LazyNeedHelp />,
   },
   {
-    path: '/need-help/:id',
+    path: '/yardimda-bulunabilirim/:id',
     element: <LazyHelpDetail />,
   },
   {
@@ -31,7 +31,7 @@ export default [
     element: <LazyHelpFullLinks />,
   },
   {
-    path: '/case',
+    path: '/yardim',
     element: <LazyCaseDetail />,
   },
   {
