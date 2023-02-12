@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
+import { Helmet } from 'react-helmet';
 import { IHelpListItem } from '@/models/helpList.model';
 import Button from '../components/formElements/button';
 import Input from '../components/formElements/input';
@@ -70,6 +71,28 @@ const HelpDetail = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <meta
+          name="twitter:card"
+          content="summary_large_image"
+        />
+        <meta
+          name="twitter:creator"
+          content="@yardimyericom"
+        />
+        <meta
+          name="twitter:title"
+          content="Yardımyeri.com"
+        />
+        <meta
+          name="twitter:description"
+          content="Yardımyeri.com - Deprem yardım."
+        />
+        <meta
+          name="twitter:image"
+          content={`https://api.yardimyeri.com/images/${id}.png`}
+        />
+      </Helmet>
       <PageTitle title="Yardım Talebi Detayı" />
       {!isLoading && (
         <>
