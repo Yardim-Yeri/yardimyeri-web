@@ -1,5 +1,6 @@
 import { useQuery } from 'react-query';
 import { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import {
   LocationContextProvider,
   useLocationReducer,
@@ -12,22 +13,23 @@ import {
 } from '@/api/location.service';
 import Select from '.';
 
-interface ILocationValues {
-  id: number;
-  name: string;
-  key?: number;
-}
-
 interface ISelectValues {
-  province?: ILocationValues;
-  district?: ILocationValues;
-  neighborhood?: ILocationValues;
-  street?: ILocationValues;
+  province?: ISelectValues;
+  district?: ISelectValues;
+  neighborhood?: ISelectValues;
+  street?: ISelectValues;
 }
 
 const SelectLocation = () => {
   const defaultValue = { id: 0, name: 'Seciniz...' };
-  const [value, setValue] = useState<ISelectValues>({
+  const {
+    control,
+    formState: { errors },
+    clearErrors,
+    setError,
+    setValue,
+  } = useFormContext();
+  const [locationFields, setLocationFields] = useState<ISelectValues>({
     province: undefined,
     district: undefined,
     neighborhood: undefined,
@@ -40,62 +42,85 @@ const SelectLocation = () => {
   );
 
   const { data: districtsData } = useQuery(
-    ['districts', value.province?.key],
+    ['districts', locationFields.province?.key],
     getDistricts,
     {
-      enabled: !!value.province,
+      enabled: !!locationFields.province,
     },
   );
 
   const { data: neighborhoodsData } = useQuery(
-    ['neighborhoods', value.district?.key],
+    ['neighborhoods', locationFields.district?.key],
     getNeighborhoods,
     {
-      enabled: !!value.district,
+      enabled: !!locationFields.district,
     },
   );
 
   const { data: streetsData } = useQuery(
-    ['streets', value.neighborhood?.key],
+    ['streets', locationFields.neighborhood?.key],
     getStreets,
     {
-      enabled: !!value.neighborhood,
+      enabled: !!locationFields.neighborhood,
     },
   );
 
-  const handleProvinceChange = (selectValue: ILocationValues) => {
-    setValue((prevState) => ({
+  const handleProvinceChange = (selectValue: ISelectValues) => {
+    setLocationFields((prevState) => ({
       ...prevState,
       street: undefined,
       neighborhood: undefined,
       district: undefined,
       province: selectValue,
     }));
-    dispatchLocation({ type: 'SET_PROVINCE', payload: value.key });
+    dispatchLocation({ type: 'SET_PROVINCE', payload: selectValue.key });
+    setValue('province_id', selectValue.key);
+    clearErrors('province_id');
+    [
+      {
+        name: 'district_id',
+        type: 'required',
+        message: 'Bu alan zorunludur.',
+      },
+      {
+        name: 'neighborhood_id',
+        type: 'required',
+        message: 'Bu alan zorunludur.',
+      },
+    ].forEach(({ name, type, message }) => setError(name, { type, message }));
   };
 
-  const handleDistrictChange = (selectValue: ILocationValues) => {
-    setValue((prevState) => ({
+  const handleDistrictChange = (selectValue: ISelectValues) => {
+    setLocationFields((prevState) => ({
       ...prevState,
       street: undefined,
       neighborhood: undefined,
       district: selectValue,
     }));
-    dispatchLocation({ type: 'SET_DISTRICT', payload: value.key });
+    dispatchLocation({ type: 'SET_DISTRICT', payload: selectValue.key });
+    setValue('district_id', selectValue.key);
+    clearErrors('district_id');
+    setError('neighborhood_id', {
+      type: 'required',
+      message: 'Bu alan zorunludur.',
+    });
   };
 
-  const handleNeighborhoodChange = (selectValue: ILocationValues) => {
-    setValue((prevState) => ({
+  const handleNeighborhoodChange = (selectValue: ISelectValues) => {
+    setLocationFields((prevState) => ({
       ...prevState,
       street: undefined,
       neighborhood: selectValue,
     }));
-    dispatchLocation({ type: 'SET_NEIGHBORHOOD', payload: value.key });
+    dispatchLocation({ type: 'SET_NEIGHBORHOOD', payload: selectValue.key });
+    setValue('neighborhood_id', selectValue.key);
+    clearErrors('neighborhood_id');
   };
 
-  const handleStreetChange = (selectValue: ILocationValues) => {
-    setValue((prevState) => ({ ...prevState, street: selectValue }));
-    dispatchLocation({ type: 'SET_STREET', payload: value.key });
+  const handleStreetChange = (selectValue: ISelectValues) => {
+    setLocationFields((prevState) => ({ ...prevState, street: selectValue }));
+    dispatchLocation({ type: 'SET_STREET', payload: selectValue.id });
+    setValue('street_id', selectValue.id);
   };
 
   return (
@@ -105,31 +130,85 @@ const SelectLocation = () => {
           <span>Loading...</span>
         ) : (
           provinceData && (
-            <Select
-              items={provinceData.data}
-              value={value.province || defaultValue}
-              onChange={handleProvinceChange}
+            <Controller
+              name="province_id"
+              control={control}
+              rules={{
+                required: 'Bu alan zorunludur.',
+              }}
+              render={({ field }) => (
+                <div>
+                  <Select
+                    {...field}
+                    items={provinceData.data}
+                    value={locationFields.province || defaultValue}
+                    onChange={handleProvinceChange}
+                  />
+                  <span className="text-red-600 text-sm">
+                    {errors.province_id?.message}
+                  </span>
+                </div>
+              )}
             />
           )
         )}
-        <Select
-          items={districtsData?.data}
-          value={value.district || defaultValue}
-          onChange={handleDistrictChange}
-          disabled={!value.province}
-        />
-        <Select
-          items={neighborhoodsData?.data}
-          value={value.neighborhood || defaultValue}
-          onChange={handleNeighborhoodChange}
-          disabled={!value.district}
-        />
-        <Select
-          items={streetsData?.data}
-          value={value.street || defaultValue}
-          onChange={handleStreetChange}
-          disabled={!value.neighborhood}
-        />
+        <div>
+          <Controller
+            name="district_id"
+            control={control}
+            rules={{
+              required: 'Bu alan zorunludur.',
+            }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                items={districtsData?.data}
+                value={locationFields.district || defaultValue}
+                onChange={handleDistrictChange}
+                disabled={!locationFields.province}
+              />
+            )}
+          />
+          <span className="text-red-600 text-sm">
+            {errors.district_id?.message}
+          </span>
+        </div>
+        <div>
+          <Controller
+            name="neighborhood_id"
+            control={control}
+            rules={{
+              required: 'Bu alan zorunludur.',
+            }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                items={neighborhoodsData?.data}
+                value={locationFields.neighborhood || defaultValue}
+                onChange={handleNeighborhoodChange}
+                disabled={!locationFields.district}
+              />
+            )}
+          />
+          <span className="text-red-600 text-sm">
+            {errors.neighborhood_id?.message}
+          </span>
+        </div>
+        <div>
+          <Controller
+            name="street_id"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                items={streetsData?.data}
+                value={locationFields.street || defaultValue}
+                onChange={handleStreetChange}
+                disabled={!locationFields.neighborhood}
+              />
+            )}
+          />
+        </div>
       </div>
     </LocationContextProvider>
   );

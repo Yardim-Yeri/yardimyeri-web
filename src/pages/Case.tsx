@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { useQuery } from 'react-query';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import {
+  useLocation,
+  Link,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import queryString from 'query-string';
 import { CheckIcon } from '@heroicons/react/24/solid';
 import { toast } from 'react-hot-toast';
@@ -42,7 +47,7 @@ const Case = () => {
     {
       enabled: false,
       onError: (error) => {
-        toast.error(`(${error.message}) ${error.message}`);
+        toast.error(`${error.message}`);
       },
       onSuccess: () => {
         successAction();
@@ -56,7 +61,7 @@ const Case = () => {
     {
       enabled: false,
       onError: (error) => {
-        toast.error(`(${error.message}) ${error.message}`);
+        toast.error(`${error.message}`);
       },
       onSuccess: () => {
         successAction();
@@ -90,7 +95,7 @@ const Case = () => {
             Talep Bulunamadi.
           </h1>
           <p className="text-1xl pb-8 px-12 font-medium">
-            Talep tamamlanmis veya iptal edilmis olabilir..
+            Talep tamamlanmiş veya iptal edilmiş olabilir.
           </p>
           <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
             <Link
