@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
 import { ChangeEvent, FC } from 'react';
 
-interface IInputProps {
+export interface IInputProps {
   name: string;
   placeholder: string;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;

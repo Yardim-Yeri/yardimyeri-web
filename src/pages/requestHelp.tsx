@@ -64,6 +64,7 @@ const RequestHelp = () => {
           />
           <InputPhone
             name="phoneNumber"
+            placeholder="Telefon Numaraniz"
             onChange={handleChangeFields}
           />
           <div className="border border-black rounded-md p-4">
