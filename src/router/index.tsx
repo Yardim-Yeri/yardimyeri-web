@@ -7,6 +7,7 @@ const LazyRequestHelp = lazy(() => import('../pages/requestHelp'));
 const LazyNeedHelp = lazy(() => import('../pages/needHelp'));
 const LazyHelpFullLinks = lazy(() => import('../pages/HelpFullLinks'));
 const LazyHelpDetail = lazy(() => import('../pages/HelpDetail'));
+const LazyCaseDetail = lazy(() => import('../pages/Case'));
 
 export default [
   {
@@ -28,6 +29,10 @@ export default [
   {
     path: '/yararli-linkler',
     element: <LazyHelpFullLinks />,
+  },
+  {
+    path: '/case',
+    element: <LazyCaseDetail />,
   },
   {
     path: '*',
