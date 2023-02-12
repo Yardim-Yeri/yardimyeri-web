@@ -110,12 +110,14 @@ const HelpDetail = () => {
               aktarabilmemiz için gerekli
             </p>
           </div>
-          <div className="flex justify-center mt-6">
-            <Button
-              label="Yardım Et"
-              onClick={handleModalOpen}
-            />
-          </div>
+          {data?.status !== 'Yardım Bekliyor' && (
+            <div className="flex justify-center mt-6">
+              <Button
+                label="Yardım Et"
+                onClick={handleModalOpen}
+              />
+            </div>
+          )}
         </>
       )}
 
@@ -194,7 +196,12 @@ const HelpDetail = () => {
                       message: 'Doğru formatta bir telefon numarası giriniz.',
                     },
                   }}
-                  render={({ field }) => <InputPhone {...field} />}
+                  render={({ field }) => (
+                    <InputPhone
+                      placeholder="Telefon Numaraniz"
+                      {...field}
+                    />
+                  )}
                 />
                 <span className="text-red-600 text-sm">
                   {errors.phone_number?.message}
