@@ -47,6 +47,7 @@ const NeedHelp = () => {
           <div className="mt-6">
             {helpList?.data.map((item) => {
               const {
+                id,
                 name,
                 address,
                 how_many_person,
@@ -75,7 +76,7 @@ const NeedHelp = () => {
                       <p>{moment(created_at).format('DD.MM.YYYY HH:MM')}</p>
                     </div>
                     <div className="m-2">
-                      <p className="font-bold">Kaç Kişilik </p>
+                      <p className="font-bold">Kaç Kişilik</p>
                       <p>{how_many_person}</p>
                     </div>
                     <div className="m-2">
@@ -92,7 +93,7 @@ const NeedHelp = () => {
                       {status}
                     </p>
                     <Link
-                      to="/need-help/2323" // TODO
+                      to={`/need-help/${id}`}
                       className="p-2 bg-blue-500 rounded-md text-white"
                     >
                       Detaylar
