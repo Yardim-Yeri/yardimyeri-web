@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
-import { apiCall } from '../api';
+import { useQuery } from 'react-query';
+import { getNeeds } from '@/api/needs.service';
+import { LocationContextProvider } from '@/context/location.context';
 import Button from '../components/formElements/button';
 import Input from '../components/formElements/input';
 import InputPhone from '../components/formElements/input/inputPhone';
@@ -12,45 +13,41 @@ import Layout from '../components/shared/Layout';
 type Fields = {
   name: string;
   phoneNumber: string;
-  type: string;
+  type: IRadioValues | undefined;
   detail: string;
   needHelpCount: string | number;
   apartment: string;
   address: string;
 };
 
+interface IRadioValues {
+  id: number;
+  label: string;
+}
+
 const RequestHelp = () => {
   const [fields, setFields] = useState<Fields>({
     name: '',
     phoneNumber: '',
-    type: '',
+    type: undefined,
     detail: '',
     needHelpCount: '',
     apartment: '',
     address: '',
   });
-  const { data, isLoading } = useQuery('needs', () =>
-    apiCall({
-      url: '/needs',
-      method: 'GET',
-    }),
-  );
-  const postForm = useMutation({
-    mutationFn: (payload: Fields) =>
-      apiCall({
-        method: 'POST',
-        url: '/send-help-form',
-        data: payload,
-      }),
-  });
+  const { data, isLoading } = useQuery('needs', getNeeds);
 
   const onSubmit = () => {
-    postForm.mutate(fields);
+    console.log(fields);
   };
 
   const handleChangeFields = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFields({ ...fields, [name]: value });
+  };
+
+  const handleTypeChange = (radioValue: IRadioValues) => {
+    setFields({ ...fields, type: radioValue });
   };
 
   return (
@@ -74,7 +71,13 @@ const RequestHelp = () => {
             {isLoading ? (
               <span>Loading...</span>
             ) : (
-              data && <RadioGroup items={data} />
+              data && (
+                <RadioGroup
+                  value={fields.type}
+                  items={data}
+                  onChange={handleTypeChange}
+                />
+              )
             )}
           </div>
           <Input
@@ -89,7 +92,9 @@ const RequestHelp = () => {
             onChange={handleChangeFields}
           />
           <Map />
-          <SelectLocation />
+          <LocationContextProvider>
+            <SelectLocation />
+          </LocationContextProvider>
           <Input
             name="apartment"
             placeholder="Apartman"

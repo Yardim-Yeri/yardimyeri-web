@@ -1,18 +1,26 @@
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { FC, Fragment, useState } from 'react';
+import { FC, Fragment } from 'react';
+
+interface ISelectValues {
+  id: number;
+  name: string;
+  key?: number;
+}
 
 interface ISelectProps {
-  items: {
-    id: number;
-    name: string;
-    key: number;
-  }[];
+  items: ISelectValues[];
+  value: any;
+  onChange: (value: ISelectValues) => void;
   disabled?: boolean;
 }
 
-const Select: FC<ISelectProps> = ({ items, disabled }) => {
-  const [value, setValue] = useState(items[0]);
+const Select: FC<ISelectProps> = ({
+  items = [],
+  disabled,
+  value,
+  onChange,
+}) => {
   const listClassName = ({ active }: { active: boolean }) =>
     `relative cursor-default select-none py-2 pl-10 pr-4 ${
       active ? 'bg-black text-white' : 'text-gray-800'
@@ -21,13 +29,13 @@ const Select: FC<ISelectProps> = ({ items, disabled }) => {
   return (
     <Listbox
       value={value}
-      onChange={setValue}
+      onChange={onChange}
     >
       <div
         className={`${disabled && 'pointer-events-none opacity-60'} relative`}
       >
         <Listbox.Button className="relative w-full cursor-pointer rounded-md p-4 pr-10 text-left bg-black text-white sm:text-sm">
-          <span className="block truncate">{value.name}</span>
+          <span className="block truncate">{value?.name}</span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronUpDownIcon
               className="h-5 w-5 text-gray-400"
@@ -55,7 +63,7 @@ const Select: FC<ISelectProps> = ({ items, disabled }) => {
                         selected ? 'font-medium' : 'font-normal'
                       }`}
                     >
-                      {item.name}
+                      {item?.name}
                     </span>
                     {selected ? (
                       <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
