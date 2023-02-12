@@ -32,18 +32,18 @@ const NeedHelp = () => {
         <>
           <div className="flex flex-col md:flex-row gap-4">
             <HelpCard
-              text="Ulaştırılan Yardım Sayısı"
+              text="Yardım Ulaştırılan Kişi Sayısı"
               count={helpList?.success_help_count}
               color="green"
             />
 
             <HelpCard
-              text="Bekleyen Yardım Sayısı"
+              text="Yardım Bekleyen Kişi Sayısı"
               count={helpList?.pending_help_count}
               color="yellow"
             />
             <HelpCard
-              text="Ulaştırılmakta Olan Yardım Sayısı"
+              text="Yardım Ulaştırılacak Kişi Sayısı"
               count={helpList?.process_help_count}
               color="blue"
             />

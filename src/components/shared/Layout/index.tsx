@@ -9,7 +9,7 @@ interface ILayout {
 }
 
 const Layout = ({ children, formLayout = false }: ILayout) => {
-  const isFormLayout = formLayout ? ' w-1/2' : '';
+  const isFormLayout = formLayout ? 'lg:w-1/2' : '';
   const [, dispatchGeoContext] = useGeolocationReducer();
 
   const getLocation = useCallback(() => {
