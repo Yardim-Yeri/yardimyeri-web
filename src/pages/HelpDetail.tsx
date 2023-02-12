@@ -90,7 +90,7 @@ const HelpDetail = () => {
         />
         <meta
           name="twitter:image"
-          content={`https://api.yardimyeri.com/images/${id}.png`}
+          content={`https://api_test.yardimyeri.com/images/${id}.png`}
         />
       </Helmet>
       <PageTitle title="Yardım Talebi Detayı" />
