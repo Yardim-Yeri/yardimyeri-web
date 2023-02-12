@@ -8,7 +8,7 @@ import InputPhone from '../components/formElements/input/inputPhone';
 import Layout from '../components/shared/Layout';
 import Modal from '../components/shared/Modal/Modal';
 import PageTitle from '../components/shared/PageTitle';
-import { apiCall } from '../api';
+import { getHelpsById } from '../api/help.service';
 
 type Fields = {
   name: string;
@@ -25,8 +25,9 @@ const HelpDetail = () => {
   });
   const { id } = useParams();
 
-  const { data, isLoading } = useQuery<IHelpListItem>('helpById', () =>
-    apiCall({ url: `help/${id}`, method: 'GET' }),
+  const { data, isLoading } = useQuery<IHelpListItem>(
+    ['helpById', id],
+    getHelpsById,
   );
 
   const handleModalOpen = () => {

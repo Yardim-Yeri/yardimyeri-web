@@ -6,15 +6,15 @@ import PageTitle from '../components/shared/PageTitle';
 import Layout from '../components/shared/Layout';
 import HelpCard from '../components/helpCard/HelpCard';
 import Pagination from '../components/shared/Pagination/Pagination';
-import { apiCall } from '../api';
 import { IHelpListResponse } from '@/models/helpList.model';
+import { getHelps } from '@/api/help.service';
 
 const NeedHelp = () => {
   const [page, setPage] = useState<number>(1);
 
   const { data: helpList, isLoading } = useQuery<IHelpListResponse>(
     ['help', page],
-    () => apiCall({ url: `help?page=${page}`, method: 'GET' }),
+    getHelps,
   );
 
   const handlePageClick = (selectedPage: number) => {
