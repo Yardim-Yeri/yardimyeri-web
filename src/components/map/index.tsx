@@ -1,14 +1,17 @@
 import { Icon } from 'leaflet';
 import { useCallback, useState } from 'react';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { useFormContext } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { useGeolocationReducer } from '@/context/geolocation.context';
 import MarkerIcon from '../../assets/marker.svg';
 
 type LatLng = [number, number];
 
 const Map = () => {
+  const { setValue } = useFormContext();
   const [, dispatchGeoContext] = useGeolocationReducer();
-  const [positionState, setPositionState] = useState<LatLng>([41, 29]);
+  const [positionState, setPositionState] = useState<LatLng | null>(null);
   const icon = new Icon({
     iconUrl: MarkerIcon,
     iconSize: [32, 32],
@@ -24,13 +27,18 @@ const Map = () => {
           type: 'GET_LOCATION',
           payload: { lat: latitude, lng: longitude },
         });
+        setValue('lat', latitude);
+        setValue('lng', longitude);
       },
       () => {
         dispatchGeoContext({ type: 'REJECT_LOCATION' });
-        setPositionState([41, 29]);
+        toast.error(
+          'Bunu yapabilmek için konum bilgilerini paylaşmaya izin vermelisiniz.',
+        );
+        setPositionState(null);
       },
     );
-  }, [dispatchGeoContext]);
+  }, [dispatchGeoContext, setValue]);
 
   return (
     <>
@@ -43,26 +51,24 @@ const Map = () => {
           Konum bilgilerimi getir
         </button>
       </div>
-      <div className="w-full h-[450px] overflow-hidden">
-        <MapContainer
-          center={positionState}
-          zoom={13}
-          scrollWheelZoom={false}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Marker
-            position={positionState}
-            icon={icon}
+      {positionState && (
+        <div className="w-full h-[450px] overflow-hidden">
+          <MapContainer
+            center={positionState}
+            zoom={13}
+            scrollWheelZoom={false}
           >
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
-        </MapContainer>
-      </div>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker
+              position={positionState}
+              icon={icon}
+            />
+          </MapContainer>
+        </div>
+      )}
     </>
   );
 };

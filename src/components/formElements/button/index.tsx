@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 interface IButtonProps {
+  disabled?: boolean;
   label: string;
   htmlType?: 'button' | 'submit' | 'reset';
   size?: 'small' | 'default' | 'large';
@@ -9,11 +10,13 @@ interface IButtonProps {
 }
 
 const Button: FC<IButtonProps> = ({
+  disabled = false,
   label,
   htmlType = 'button',
   size = 'default',
   type = 'default',
   onClick,
+  ...props
 }) => {
   const buttonColor = () => {
     switch (type) {
@@ -43,7 +46,11 @@ const Button: FC<IButtonProps> = ({
 
   return (
     <button
-      className={`${buttonColor()} ${buttonSize()} rounded-md text-white`}
+      {...props}
+      disabled={disabled}
+      className={`${buttonColor()} ${buttonSize()} ${
+        disabled && 'bg-opacity-60 cursor-not-allowed'
+      } rounded-md text-white`}
       type={htmlType}
       onClick={onClick}
     >

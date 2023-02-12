@@ -15,3 +15,8 @@ export const postHelperForm = async (id: string | undefined, payload: any) => {
   const response = await instance.post(`/send-helper-form/${id}`, payload);
   return response.data;
 };
+
+export const postHelpForm = async (payload: any) => {
+  const response = await instance.post('/send-help-form', payload);
+  return response.data;
+};

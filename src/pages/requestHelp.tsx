@@ -1,7 +1,17 @@
-import { ChangeEvent, useState } from 'react';
-import { useQuery } from 'react-query';
+import { AxiosError } from 'axios';
+import { useState } from 'react';
+import {
+  Controller,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { useMutation, useQuery } from 'react-query';
+import { IRadioValues } from '@/models/helpFrom.model';
+import { IResponseType } from '@/models/general.model';
 import { getNeeds } from '@/api/needs.service';
-import { LocationContextProvider } from '@/context/location.context';
+import { postHelpForm } from '@/api/help.service';
 import Button from '../components/formElements/button';
 import Input from '../components/formElements/input';
 import InputPhone from '../components/formElements/input/inputPhone';
@@ -9,45 +19,77 @@ import RadioGroup from '../components/formElements/radioGroup';
 import SelectLocation from '../components/formElements/select/selectLocation';
 import Map from '../components/map';
 import Layout from '../components/shared/Layout';
+import { regexp } from '../utils/constants';
 
-type Fields = {
+type FormData = {
   name: string;
-  phoneNumber: string;
-  type: IRadioValues | undefined;
-  detail: string;
-  needHelpCount: string | number;
-  apartment: string;
-  address: string;
+  phone_number: string | null;
+  need_type: string | null;
+  need_type_detail?: string;
+  how_many_person: number | null;
+  apartment?: string;
+  for_directions?: string;
+  province_id: number | undefined;
+  district_id: number | undefined;
+  neighborhood_id: number | undefined;
+  street_id: number | undefined;
+  lat: number | null;
+  lng: number | null;
 };
 
-interface IRadioValues {
-  id: number;
-  label: string;
-}
-
 const RequestHelp = () => {
-  const [fields, setFields] = useState<Fields>({
+  const defaultValues = {
     name: '',
-    phoneNumber: '',
-    type: undefined,
-    detail: '',
-    needHelpCount: '',
+    phone_number: null,
+    need_type: null,
+    need_type_detail: '',
+    how_many_person: null,
     apartment: '',
-    address: '',
+    for_directions: '',
+    province_id: undefined,
+    district_id: undefined,
+    neighborhood_id: undefined,
+    street_id: undefined,
+    lat: null,
+    lng: null,
+  };
+  const [type, setType] = useState<IRadioValues>();
+  const methods = useForm<FormData>({
+    defaultValues,
+    mode: 'onChange',
   });
-  const { data, isLoading } = useQuery('needs', getNeeds);
-
-  const onSubmit = () => {
-    console.log(fields);
-  };
-
-  const handleChangeFields = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFields({ ...fields, [name]: value });
-  };
+  const { data: needsData, isLoading: needsLoading } = useQuery<IRadioValues[]>(
+    'needs',
+    getNeeds,
+  );
+  const formSendMutation = useMutation<
+    IResponseType,
+    AxiosError<IResponseType>,
+    FormData,
+    string
+  >((payload) => postHelpForm(payload), {
+    onError: (error) => {
+      toast.error(
+        `(${error.response?.status}) ${error.response?.data?.message}`,
+      );
+    },
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success(data.message);
+      }
+      methods.reset();
+      methods.clearErrors();
+    },
+  });
 
   const handleTypeChange = (radioValue: IRadioValues) => {
-    setFields({ ...fields, type: radioValue });
+    methods.setValue('need_type', radioValue.label);
+    setType(radioValue);
+    methods.clearErrors('need_type');
+  };
+
+  const onSubmit: SubmitHandler<FormData> = (fields) => {
+    formSendMutation.mutate(fields);
   };
 
   return (
@@ -56,61 +98,142 @@ const RequestHelp = () => {
         <h1 className="text-lg sm:text-4xl font-bold w-3/4 text-center leading-relaxed">
           YARDIM TALEBİM VAR
         </h1>
-        <div className="w-full flex flex-col gap-4">
-          <Input
-            name="name"
-            placeholder="Adınız"
-            onChange={handleChangeFields}
-          />
-          <InputPhone
-            name="phoneNumber"
-            placeholder="Telefon Numaraniz"
-            onChange={handleChangeFields}
-          />
-          <div className="border border-black rounded-md p-4">
-            <h4 className="font-semibold mb-4">İhtiyaç Türü</h4>
-            {isLoading ? (
-              <span>Loading...</span>
-            ) : (
-              data && (
-                <RadioGroup
-                  value={fields.type}
-                  items={data}
-                  onChange={handleTypeChange}
+        <FormProvider {...methods}>
+          <form
+            className="w-full flex flex-col gap-4"
+            onSubmit={methods.handleSubmit(onSubmit)}
+          >
+            <div>
+              <Controller
+                name="name"
+                control={methods.control}
+                rules={{
+                  required: 'Bu alan zorunludur.',
+                }}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    placeholder="Adınız"
+                  />
+                )}
+              />
+              <span className="text-red-600 text-sm">
+                {methods.formState.errors.name?.message}
+              </span>
+            </div>
+            <div>
+              <Controller
+                name="phone_number"
+                control={methods.control}
+                rules={{
+                  required: 'Bu alan zorunludur.',
+                  pattern: {
+                    value: regexp.phoneNumber,
+                    message: 'Doğru formatta bir telefon numarası giriniz.',
+                  },
+                }}
+                render={({ field }) => (
+                  <InputPhone
+                    {...field}
+                    placeholder="Telefon Numaranız"
+                  />
+                )}
+              />
+              <span className="text-red-600 text-sm">
+                {methods.formState.errors.phone_number?.message}
+              </span>
+            </div>
+            <div className="border border-black rounded-md p-4">
+              <h4 className="font-semibold mb-4">İhtiyaç Türü</h4>
+              {needsLoading ? (
+                <span>Loading...</span>
+              ) : (
+                needsData && (
+                  <>
+                    <Controller
+                      name="need_type"
+                      control={methods.control}
+                      rules={{
+                        required: 'Bu alan zorunludur.',
+                      }}
+                      render={({ field }) => (
+                        <RadioGroup
+                          {...field}
+                          value={type}
+                          items={needsData}
+                          onChange={handleTypeChange}
+                        />
+                      )}
+                    />
+                    <span className="text-red-600 text-sm">
+                      {methods.formState.errors.need_type?.message}
+                    </span>
+                  </>
+                )
+              )}
+            </div>
+            <Controller
+              name="need_type_detail"
+              control={methods.control}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  placeholder="Varsa İhtiyaç Türü Detayı"
                 />
-              )
-            )}
-          </div>
-          <Input
-            name="detail"
-            placeholder="Varsa İhtiyaç Türü Detayı"
-            onChange={handleChangeFields}
-          />
-          <Input
-            type="number"
-            name="needHelpCount"
-            placeholder="Kaç Kişinin İhtiyacı Var?"
-            onChange={handleChangeFields}
-          />
-          <Map />
-          <LocationContextProvider>
+              )}
+            />
+            <div>
+              <Controller
+                name="how_many_person"
+                control={methods.control}
+                rules={{
+                  required: 'Bu alan zorunludur.',
+                }}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    type="number"
+                    placeholder="Kaç Kişinin İhtiyacı Var?"
+                  />
+                )}
+              />
+              <span className="text-red-600 text-sm">
+                {methods.formState.errors.how_many_person?.message}
+              </span>
+            </div>
+
+            <Map />
             <SelectLocation />
-          </LocationContextProvider>
-          <Input
-            name="apartment"
-            placeholder="Apartman"
-            onChange={handleChangeFields}
-          />
-          <Input
-            name="address"
-            placeholder="Adres Tarifi"
-            onChange={handleChangeFields}
-          />
-          <Button
-            label="Yardım Talebi Gönder"
-            onClick={onSubmit}
-          />
-        </div>
+            <div>
+              <Controller
+                name="apartment"
+                control={methods.control}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    placeholder="Apartman"
+                  />
+                )}
+              />
+            </div>
+            <div>
+              <Controller
+                name="for_directions"
+                control={methods.control}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    placeholder="Adres Tarifi"
+                  />
+                )}
+              />
+            </div>
+            <Button
+              htmlType="submit"
+              label="Yardım Talebi Gönder"
+            />
+          </form>
+        </FormProvider>
       </div>
     </Layout>
   );

@@ -1,14 +1,10 @@
 import { RadioGroup as RG } from '@headlessui/react';
 import { FC } from 'react';
-
-interface IRadioValues {
-  id: number;
-  label: string;
-}
+import { IRadioValues } from '@/models/helpFrom.model';
 
 interface IRadioGroupProps {
   items: IRadioValues[];
-  value: any;
+  value: IRadioValues | undefined;
   onChange: (value: IRadioValues) => void;
 }
 
@@ -50,8 +46,14 @@ const radioClassName = ({
     checked ? 'bg-black text-white' : 'bg-white'
   } relative flex cursor-pointer rounded-md p-4 shadow-md focus:outline-none select-none`;
 
-const RadioGroup: FC<IRadioGroupProps> = ({ items, value, onChange }) => (
+const RadioGroup: FC<IRadioGroupProps> = ({
+  items,
+  value,
+  onChange,
+  ...props
+}) => (
   <RG
+    {...props}
     value={value}
     onChange={onChange}
     className="grid grid-cols-2 sm:grid-cols-3 gap-2"
