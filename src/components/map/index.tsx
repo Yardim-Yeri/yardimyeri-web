@@ -1,8 +1,8 @@
 import { Icon } from 'leaflet';
 import { useCallback, useState } from 'react';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-import { toast } from 'react-hot-toast';
 import { useFormContext } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { useGeolocationReducer } from '@/context/geolocation.context';
 import MarkerIcon from '../../assets/marker.svg';
 
@@ -65,11 +65,7 @@ const Map = () => {
             <Marker
               position={positionState}
               icon={icon}
-            >
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker>
+            />
           </MapContainer>
         </div>
       )}
