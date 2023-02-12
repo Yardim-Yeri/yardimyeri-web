@@ -48,5 +48,7 @@ module.exports = {
     'implicit-arrow-linebreak': ['off'],
     'react/jsx-props-no-spreading': 'off',
     '@typescript-eslint/indent': 'off',
+    '@typescript-eslint/naming-convention': ['off'],
+    'operator-linebreak': ['off'],
   },
 };

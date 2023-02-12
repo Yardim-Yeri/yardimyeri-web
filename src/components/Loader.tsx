@@ -1,3 +1,10 @@
-const Loader = () => <div>Loading...</div>;
+const Loader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="lds-ripple">
+      <div />
+      <div />
+    </div>
+  </div>
+);
 
 export default Loader;

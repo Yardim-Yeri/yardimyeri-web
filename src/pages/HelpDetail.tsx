@@ -1,10 +1,14 @@
 import { ChangeEvent, useState } from 'react';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
+import { IHelpListItem } from '@/models/helpList.model';
 import Button from '../components/formElements/button';
 import Input from '../components/formElements/input';
 import InputPhone from '../components/formElements/input/inputPhone';
 import Layout from '../components/shared/Layout';
 import Modal from '../components/shared/Modal/Modal';
 import PageTitle from '../components/shared/PageTitle';
+import { getHelpsById } from '../api/help.service';
 
 type Fields = {
   name: string;
@@ -19,6 +23,12 @@ const HelpDetail = () => {
     email: '',
     phoneNumber: '',
   });
+  const { id } = useParams();
+
+  const { data, isLoading } = useQuery<IHelpListItem>(
+    ['helpById', id],
+    getHelpsById,
+  );
 
   const handleModalOpen = () => {
     setIsOpen(true);
@@ -32,43 +42,57 @@ const HelpDetail = () => {
   return (
     <Layout>
       <PageTitle title="Yardim Talebi Detayi" />
-      <div className="flex justify-end">
-        <div className="text-base font-bold bg-amber-300 p-4 rounded-lg">
-          Yardim Bekliyor
-        </div>
-      </div>
-      <div className="flex flex-col gap-4">
-        <div className="shadow-md p-4 rounded">
-          <p className="text-base font-bold">İsim</p>
-          <p className="text-base"> Sercan Turkoglu</p>
-        </div>
-        <div className="shadow-md p-4 rounded">
-          <p className="text-base font-bold">İhtiyaç Türü</p>
-          <p className="text-base"> Barınma</p>
-        </div>
-        <div className="shadow-md p-4 rounded">
-          <p className="text-base font-bold">İhtiyaç Türü Detayı</p>
-          <p className="text-base">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum sunt
-            nihil voluptate possimus ex nobis accusantium nam, fuga quis
-            dolorem, quisquam totam ipsam odit explicabo sequi. Vitae animi
-            autem soluta sint modi facere reprehenderit eum aut laboriosam
-            itaque veniam voluptatum, eveniet voluptatibus ab id. Explicabo
-            laudantium est sapiente temporibus? Quasi.
-          </p>
-        </div>
-        <p className="text-base text-red-600">
-          Yardıma gidiyorsan veya yardım ettiysen aşağıdaki buton aracılığı ile
-          bize bildir. Yardıma ihtiyacı olanlara doğru veriyi aktarabilmemiz
-          için gerekli
-        </p>
-      </div>
-      <div className="flex justify-center mt-6">
-        <Button
-          label="Yardım Et"
-          onClick={handleModalOpen}
-        />
-      </div>
+      {!isLoading && (
+        <>
+          <div className="flex justify-end">
+            <div className="text-base font-bold bg-amber-300 p-4 rounded-lg">
+              {data?.status}
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="shadow-md p-4 rounded">
+              <p className="text-base font-bold">İsim</p>
+              <p className="text-base">{data?.name}</p>
+            </div>
+            <div className="shadow-md p-4 rounded">
+              <p className="text-base font-bold">İhtiyaç Türü</p>
+              <p className="text-base"> {data?.need.type}</p>
+            </div>
+            {data?.need.detail && (
+              <div className="shadow-md p-4 rounded">
+                <p className="text-base font-bold">İhtiyaç Türü Detayı</p>
+                <p className="text-base">{data?.need.detail}</p>
+              </div>
+            )}
+            <div className="shadow-md p-4 rounded">
+              <p className="text-base font-bold">Kaç Kişilik</p>
+              <p className="text-base"> {data?.how_many_person}</p>
+            </div>
+            <div className="shadow-md p-4 rounded">
+              <p className="text-base font-bold">Adres</p>
+              <p className="text-base"> {data?.address}</p>
+            </div>
+            {data?.for_directions && (
+              <div className="shadow-md p-4 rounded">
+                <p className="text-base font-bold">Adres Tarifi</p>
+                <p className="text-base"> {data?.for_directions}</p>
+              </div>
+            )}
+            <p className="text-base text-red-600">
+              Yardıma gidiyorsan veya yardım ettiysen aşağıdaki buton aracılığı
+              ile bize bildir. Yardıma ihtiyacı olanlara doğru veriyi
+              aktarabilmemiz için gerekli
+            </p>
+          </div>
+          <div className="flex justify-center mt-6">
+            <Button
+              label="Yardım Et"
+              onClick={handleModalOpen}
+            />
+          </div>
+        </>
+      )}
+
       <Modal
         title="Yardım Başlatılacak!"
         isOpen={isOpen}

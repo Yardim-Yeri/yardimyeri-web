@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
+import { memo } from 'react';
 import ReactPaginate from 'react-paginate';
 
 interface IPagination {
-  pageCount: number;
+  page: number;
+  pageCount?: number;
   pageRangeDisplayed?: number;
-  handlePageClick: (selectedPage: number) => void;
+  handlePageClick: (page: number) => void;
 }
 const Pagination = ({
-  pageCount,
+  page,
+  pageCount = 0,
   pageRangeDisplayed = 1,
   handlePageClick,
 }: IPagination) => {
-  const [itemOffset, setItemOffset] = useState(1);
-
   const onClick = (event: any) => {
-    setItemOffset(event.selected + 1);
-    handlePageClick(itemOffset);
+    handlePageClick(event.selected + 1);
   };
 
   return (
@@ -29,9 +28,10 @@ const Pagination = ({
         pageRangeDisplayed={pageRangeDisplayed}
         pageCount={pageCount}
         previousLabel="<"
+        forcePage={page - 1}
       />
     </div>
   );
 };
 
-export default Pagination;
+export default memo(Pagination);

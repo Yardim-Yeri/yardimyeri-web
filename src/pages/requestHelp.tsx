@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { useQuery } from 'react-query';
+import { getNeeds } from '@/api/needs.service';
 import { LocationContextProvider } from '@/context/location.context';
 import Button from '../components/formElements/button';
 import Input from '../components/formElements/input';
@@ -8,7 +9,6 @@ import RadioGroup from '../components/formElements/radioGroup';
 import SelectLocation from '../components/formElements/select/selectLocation';
 import Map from '../components/map';
 import Layout from '../components/shared/Layout';
-import { getNeeds } from '@/api/needs.service';
 
 type Fields = {
   name: string;
