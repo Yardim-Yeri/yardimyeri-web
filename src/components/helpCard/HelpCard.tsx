@@ -14,7 +14,7 @@ const HelpCard = ({ text, count, color }: IHelpCard) => {
     <div
       className={`flex justify-center flex-col items-center p-8 ${colorVariants[color]} text-white rounded-lg sm:text-lg w-full`}
     >
-      <p>{text}</p>
+      <p className="text-center">{text}</p>
       <p className="text-3xl mt-4">{count}</p>
     </div>
   );

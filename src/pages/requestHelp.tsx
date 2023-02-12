@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import {
   Controller,
   FormProvider,
@@ -78,6 +79,9 @@ const RequestHelp = () => {
 
   return (
     <Layout formLayout>
+      <Helmet>
+        <title>Yardımyeri.com - Yardım talebim var</title>
+      </Helmet>
       <div className="flex justify-center items-center flex-col gap-7">
         <h1 className="text-lg sm:text-4xl font-bold w-3/4 text-center leading-relaxed">
           YARDIM TALEBİM VAR

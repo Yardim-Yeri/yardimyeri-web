@@ -1,13 +1,14 @@
-import { Link } from 'react-router-dom';
-import { useQuery } from 'react-query';
 import moment from 'moment';
 import { useState } from 'react';
-import PageTitle from '../components/shared/PageTitle';
-import Layout from '../components/shared/Layout';
-import HelpCard from '../components/helpCard/HelpCard';
-import Pagination from '../components/shared/Pagination/Pagination';
+import { Helmet } from 'react-helmet';
+import { useQuery } from 'react-query';
+import { Link } from 'react-router-dom';
 import { IHelpListResponse } from '@/models/helpList.model';
 import { getHelps } from '@/api/help.service';
+import HelpCard from '../components/helpCard/HelpCard';
+import Layout from '../components/shared/Layout';
+import PageTitle from '../components/shared/PageTitle';
+import Pagination from '../components/shared/Pagination/Pagination';
 
 const NeedHelp = () => {
   const [page, setPage] = useState<number>(1);
@@ -23,23 +24,26 @@ const NeedHelp = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Yardımyeri.com - Yardımda bulunabilirim</title>
+      </Helmet>
       <PageTitle title="YARDIMA İHTİYACI OLANLAR" />
       {!isLoading && (
         <>
           <div className="flex flex-col md:flex-row gap-4">
             <HelpCard
-              text="Ulaştırılan Yardım Sayısı"
+              text="Yardım Ulaştırılan Kişi Sayısı"
               count={helpList?.success_help_count}
               color="green"
             />
 
             <HelpCard
-              text="Bekleyen Yardım Sayısı"
+              text="Yardım Bekleyen Kişi Sayısı"
               count={helpList?.pending_help_count}
               color="yellow"
             />
             <HelpCard
-              text="Ulaştırılmakta Olan Yardım Sayısı"
+              text="Yardım Ulaştırılacak Kişi Sayısı"
               count={helpList?.process_help_count}
               color="blue"
             />
@@ -93,7 +97,7 @@ const NeedHelp = () => {
                       {status}
                     </p>
                     <Link
-                      to={`/need-help/${id}`}
+                      to={`/yardimda-bulunabilirim/${id}`}
                       className="p-2 bg-blue-500 rounded-md text-white"
                     >
                       Detaylar

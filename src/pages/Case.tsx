@@ -100,7 +100,7 @@ const Case = () => {
               Anasayfa
             </Link>
             <Link
-              to="/request-help"
+              to="/yardim-talebim-var"
               className=" bg-black text-white font-semibold px-6 py-3 rounded-md"
             >
               Yardim Talebi oluştur

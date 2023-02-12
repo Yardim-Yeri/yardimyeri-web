@@ -74,7 +74,7 @@ const HelpDetail = () => {
       {!isLoading && (
         <>
           <HelpDetailContent data={data} />
-          {data?.status !== 'Yardım Bekliyor' && (
+          {data?.status === 'Yardım Bekliyor' && (
             <div className="flex justify-center mt-6">
               <Button
                 label="Yardım Et"
