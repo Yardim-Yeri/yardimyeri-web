@@ -14,6 +14,7 @@ import PageTitle from '../components/shared/PageTitle';
 import { getHelpsById, postHelperForm } from '../api/help.service';
 import { regexp } from '../utils/constants';
 import { IResponseType } from '@/models/general.model';
+import HelpDetailContent from '../components/helpDetailContent/HelpDetailContent';
 
 type FormData = {
   name: string;
@@ -24,6 +25,7 @@ type FormData = {
 const HelpDetail = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { id } = useParams();
+
   const {
     control,
     formState: { errors },
@@ -32,6 +34,7 @@ const HelpDetail = () => {
   } = useForm<FormData>({
     mode: 'onChange',
   });
+
   const formSendMutation = useMutation<
     IResponseType,
     AxiosError<IResponseType>,
@@ -70,46 +73,7 @@ const HelpDetail = () => {
       <PageTitle title="Yardım Talebi Detayı" />
       {!isLoading && (
         <>
-          <div className="flex justify-end">
-            <div className="text-base font-bold bg-amber-300 p-4 rounded-lg">
-              {data?.status}
-            </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            <div className="shadow-md p-4 rounded">
-              <p className="text-base font-bold">İsim</p>
-              <p className="text-base">{data?.name}</p>
-            </div>
-            <div className="shadow-md p-4 rounded">
-              <p className="text-base font-bold">İhtiyaç Türü</p>
-              <p className="text-base"> {data?.need.type}</p>
-            </div>
-            {data?.need.detail && (
-              <div className="shadow-md p-4 rounded">
-                <p className="text-base font-bold">İhtiyaç Türü Detayı</p>
-                <p className="text-base">{data?.need.detail}</p>
-              </div>
-            )}
-            <div className="shadow-md p-4 rounded">
-              <p className="text-base font-bold">Kaç Kişilik</p>
-              <p className="text-base"> {data?.how_many_person}</p>
-            </div>
-            <div className="shadow-md p-4 rounded">
-              <p className="text-base font-bold">Adres</p>
-              <p className="text-base"> {data?.address}</p>
-            </div>
-            {data?.for_directions && (
-              <div className="shadow-md p-4 rounded">
-                <p className="text-base font-bold">Adres Tarifi</p>
-                <p className="text-base"> {data?.for_directions}</p>
-              </div>
-            )}
-            <p className="text-base text-red-600">
-              Yardıma gidiyorsan veya yardım ettiysen aşağıdaki buton aracılığı
-              ile bize bildir. Yardıma ihtiyacı olanlara doğru veriyi
-              aktarabilmemiz için gerekli
-            </p>
-          </div>
+          <HelpDetailContent data={data} />
           {data?.status !== 'Yardım Bekliyor' && (
             <div className="flex justify-center mt-6">
               <Button
