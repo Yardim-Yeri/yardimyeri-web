@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { IHelpListItem } from '@/models/helpList.model';
 import Button from '../components/formElements/button';
@@ -34,7 +34,7 @@ const HelpDetail = () => {
   });
   const formSendMutation = useMutation<
     IResponseType,
-    AxiosError,
+    AxiosError<IResponseType>,
     FormData,
     string
   >((payload) => postHelperForm(id, payload), {
@@ -61,7 +61,7 @@ const HelpDetail = () => {
     setIsOpen(true);
   };
 
-  const onSubmit = (fields: FormData) => {
+  const onSubmit: SubmitHandler<FormData> = (fields) => {
     formSendMutation.mutate(fields);
   };
 
@@ -198,7 +198,7 @@ const HelpDetail = () => {
                   }}
                   render={({ field }) => (
                     <InputPhone
-                      placeholder="Telefon Numaraniz"
+                      placeholder="Telefon Numaranız"
                       {...field}
                     />
                   )}
