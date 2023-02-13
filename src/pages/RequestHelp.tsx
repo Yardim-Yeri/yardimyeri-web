@@ -17,7 +17,9 @@ import Button from '@/components/formElements/button';
 import Input from '@/components/formElements/input';
 import InputPhone from '@/components/formElements/input/inputPhone';
 import RadioGroup from '@/components/formElements/radioGroup';
-import SelectLocation from '@/components/formElements/select/SelectLocation';
+import SelectLocation, {
+  ISelectValuesState,
+} from '@/components/formElements/select/SelectLocation';
 import Map from '@/components/map';
 import Layout from '@/components/shared/Layout';
 
@@ -42,7 +44,13 @@ const RequestHelp = () => {
     lat: null,
     lng: null,
   };
-  const [type, setType] = useState<IRadioValues>();
+  const [type, setType] = useState<IRadioValues | null>(null);
+  const [locationFields, setLocationFields] = useState<ISelectValuesState>({
+    province_id: null,
+    district_id: null,
+    neighborhood_id: null,
+    street_id: null,
+  });
 
   const methods = useForm<FormData>({
     defaultValues,
@@ -53,6 +61,30 @@ const RequestHelp = () => {
     methods;
 
   const { name, phone_number, how_many_person, need_type } = formState.errors;
+  const formReset = () => {
+    setType(null);
+    setLocationFields({
+      province_id: null,
+      district_id: null,
+      neighborhood_id: null,
+      street_id: null,
+    });
+    reset({
+      name: '',
+      phone_number: '',
+      need_type: undefined,
+      need_type_detail: '',
+      how_many_person: '',
+      apartment: '',
+      for_directions: '',
+      lat: null,
+      lng: null,
+      province_id: undefined,
+      district_id: undefined,
+      neighborhood_id: undefined,
+      street_id: undefined,
+    });
+  };
 
   const { data: needsData, isLoading: needsLoading } = useQuery<IRadioValues[]>(
     'needs',
@@ -74,7 +106,7 @@ const RequestHelp = () => {
       if (data.success) {
         toast.success(data.message);
       }
-      reset();
+      formReset();
       clearErrors();
     },
   });
@@ -197,7 +229,10 @@ const RequestHelp = () => {
             </div>
 
             <Map />
-            <SelectLocation />
+            <SelectLocation
+              setLocationFields={setLocationFields}
+              locationFields={locationFields}
+            />
             <div>
               <Controller
                 name="apartment"
