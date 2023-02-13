@@ -1,18 +1,20 @@
-import { useQuery } from 'react-query';
 import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import {
-  LocationContextProvider,
-  useLocationReducer,
-} from '@/context/location.context';
+import { useQuery } from 'react-query';
+
 import {
   getDistricts,
   getNeighborhoods,
   getProvinces,
   getStreets,
-} from '@/api/location.service';
+} from '@/api/Location';
+import {
+  LocationContextProvider,
+  useLocationReducer,
+} from '@/context/Location';
+import { ISelectValues } from '@/models/HelpForm';
+
 import Select from '.';
-import { ISelectValues } from '@/models/helpForm.model';
 
 interface ISelectValuesState {
   province_id: ISelectValues | undefined;

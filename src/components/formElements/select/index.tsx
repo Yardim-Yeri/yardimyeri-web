@@ -1,7 +1,8 @@
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { FC, Fragment } from 'react';
-import { ISelectValues } from '@/models/helpForm.model';
+
+import { ISelectValues } from '@/models/HelpForm';
 
 interface ISelectProps {
   items: ISelectValues[];

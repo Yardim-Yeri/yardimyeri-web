@@ -1,10 +1,10 @@
 import { lazy } from 'react';
 
-import Error404 from '../pages/error404';
+import Error404 from '../pages/Error404';
 
 const LazyHomePage = lazy(() => import('../pages/HomePage'));
-const LazyRequestHelp = lazy(() => import('../pages/requestHelp'));
-const LazyNeedHelp = lazy(() => import('../pages/needHelp'));
+const LazyRequestHelp = lazy(() => import('../pages/RequestHelp'));
+const LazyNeedHelp = lazy(() => import('../pages/NeedHelp'));
 const LazyHelpFullLinks = lazy(() => import('../pages/HelpFullLinks'));
 const LazyHelpDetail = lazy(() => import('../pages/HelpDetail'));
 const LazyCaseDetail = lazy(() => import('../pages/Case'));

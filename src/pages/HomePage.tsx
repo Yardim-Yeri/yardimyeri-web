@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import Layout from '../components/shared/Layout';
+import { Link } from 'react-router-dom';
+
+import Layout from '@/components/shared/Layout';
 
 const HomePage = () => (
   <Layout>

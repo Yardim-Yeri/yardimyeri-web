@@ -3,7 +3,7 @@ import { FC } from 'react';
 interface IButtonProps {
   disabled?: boolean;
   label: string;
-  htmlType?: 'button' | 'submit' | 'reset';
+  htmlType?: 'submit' | 'reset' | 'button' | undefined;
   size?: 'small' | 'default' | 'large';
   type?: 'warning' | 'success' | 'info' | 'error' | 'default';
   onClick?: () => void;

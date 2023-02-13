@@ -3,8 +3,10 @@ import { useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
-import { useGeolocationReducer } from '@/context/geolocation.context';
+
 import MarkerIcon from '../../assets/marker.svg';
+
+import { useGeolocationReducer } from '@/context/Geolocation';
 
 type LatLng = [number, number];
 

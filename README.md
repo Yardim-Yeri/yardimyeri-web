@@ -2,6 +2,20 @@
 
 Yardimlasma platformu
 
+## Guidline
+
+Those are will checked by Eslint
+
+- All file names should have start Uppercase!
+- No console!
+- No unused variables!
+
+## Helpers
+
+- Eslint
+- Prettier
+- Husky for pre-commit
+
 ## Requirements
 
 - Node - Ideally v14+ but it's possible the project may work on older versions.
