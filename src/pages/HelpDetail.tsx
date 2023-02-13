@@ -6,12 +6,12 @@ import toast from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 
+import HelpDetailContent from '@/components/HelpDetailContent';
 import Button from '@/components/formElements/button';
 import Input from '@/components/formElements/input';
 import InputPhone from '@/components/formElements/input/inputPhone';
-import HelpDetailContent from '@/components/helpDetailContent/HelpDetailContent';
 import Layout from '@/components/shared/Layout';
-import Modal from '@/components/shared/Modal/Modal';
+import Modal from '@/components/shared/Modal';
 import PageTitle from '@/components/shared/PageTitle';
 
 import { getHelpsById, postHelperForm } from '../api/Help';

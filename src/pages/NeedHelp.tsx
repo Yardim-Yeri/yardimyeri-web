@@ -4,10 +4,10 @@ import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
-import HelpCard from '@/components/HelpCard/HelpCard';
+import HelpCard from '@/components/HelpCard';
 import Layout from '@/components/shared/Layout';
 import PageTitle from '@/components/shared/PageTitle';
-import Pagination from '@/components/shared/Pagination/Pagination';
+import Pagination from '@/components/shared/Pagination';
 
 import { getHelps } from '@/api/Help';
 import { IHelpListResponse } from '@/models/HelpList';
