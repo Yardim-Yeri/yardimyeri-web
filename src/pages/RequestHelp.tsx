@@ -16,7 +16,7 @@ import Button from '@/components/formElements/button';
 import Input from '@/components/formElements/input';
 import InputPhone from '@/components/formElements/input/inputPhone';
 import RadioGroup from '@/components/formElements/radioGroup';
-import SelectLocation from '@/components/formElements/select/selectLocation';
+import SelectLocation from '@/components/formElements/select/SelectLocation';
 import Map from '@/components/map';
 import Layout from '@/components/shared/Layout';
 
