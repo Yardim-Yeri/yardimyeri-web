@@ -7,6 +7,7 @@ import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 
 import HelpDetailContent from '@/components/HelpDetailContent';
+import Loader from '@/components/Loader';
 import Button from '@/components/formElements/button';
 import Input from '@/components/formElements/input';
 import InputPhone from '@/components/formElements/input/inputPhone';
@@ -96,6 +97,8 @@ const HelpDetail = () => {
           content={`https://api_test.yardimyeri.com/images/${id}.png`}
         />
       </Helmet>
+      {(formSendMutation.isLoading || isLoading) && <Loader />}
+
       <PageTitle title="Yardım Talebi Detayı" />
       {!isLoading && (
         <>
