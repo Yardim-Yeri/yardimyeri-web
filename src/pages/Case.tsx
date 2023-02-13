@@ -1,16 +1,19 @@
+import { CheckIcon } from '@heroicons/react/24/solid';
+import { AxiosError } from 'axios';
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { CheckIcon } from '@heroicons/react/24/solid';
-import { toast } from 'react-hot-toast';
-import { AxiosError } from 'axios';
-import { IHelpListItem } from '../models/helpList.model';
-import Button from '../components/formElements/button';
-import HelpDetailContent from '../components/helpDetailContent/HelpDetailContent';
-import Layout from '../components/shared/Layout';
-import PageTitle from '../components/shared/PageTitle';
-import { getCancelCase, getCase, getFinishCase } from '@/api/case.service';
-import Modal from '../components/shared/Modal/Modal';
+
+import Button from '@/components/formElements/button';
+import HelpDetailContent from '@/components/helpDetailContent/HelpDetailContent';
+import Layout from '@/components/shared/Layout';
+import Modal from '@/components/shared/Modal/Modal';
+import PageTitle from '@/components/shared/PageTitle';
+
+import { IHelpListItem } from '../models/HelpList';
+
+import { getCancelCase, getCase, getFinishCase } from '@/api/Case';
 
 interface ICaseResponseType {
   message: string;

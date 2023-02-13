@@ -1,8 +1,10 @@
 import { useQuery } from 'react-query';
-import { IUseFullLink } from '../models/useFullLinks.model';
-import Layout from '../components/shared/Layout';
-import PageTitle from '../components/shared/PageTitle';
-import { getUseFullLinks } from '@/api/usefulLinks.service';
+
+import Layout from '@/components/shared/Layout';
+import PageTitle from '@/components/shared/PageTitle';
+
+import { getUseFullLinks } from '@/api/UsefulLinks';
+import { IUseFullLink } from '@/models/UseFullLinks';
 
 const HelpFullLinks = () => {
   const { data, isLoading } = useQuery<IUseFullLink[]>(

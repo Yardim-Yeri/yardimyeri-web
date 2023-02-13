@@ -2,11 +2,12 @@ import { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+
 import './App.css';
 import Loader from './components/Loader';
-import { GeolocationContextProvider } from './context/geolocation.context';
-import { LocationContextProvider } from './context/location.context';
+import { GeolocationContextProvider } from './context/Geolocation';
+import { LocationContextProvider } from './context/Location';
 import routes from './router';
 
 const queryClient = new QueryClient();

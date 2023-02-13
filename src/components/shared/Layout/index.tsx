@@ -1,7 +1,9 @@
 import { ReactNode, useCallback, useEffect } from 'react';
-import { useGeolocationReducer } from '@/context/geolocation.context';
+
 import Footer from '../Footer';
 import Header from '../Header';
+
+import { useGeolocationReducer } from '@/context/Geolocation';
 
 interface ILayout {
   children: ReactNode;

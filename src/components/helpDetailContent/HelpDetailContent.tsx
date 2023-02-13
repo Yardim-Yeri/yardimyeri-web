@@ -1,4 +1,4 @@
-import { IHelpListItem } from '@/models/helpList.model';
+import { IHelpListItem } from '@/models/HelpList';
 
 const HelpDetailContent = ({ data }: { data: IHelpListItem | undefined }) => (
   <>

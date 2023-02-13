@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
-import { IHelpListResponse } from '@/models/helpList.model';
-import { getHelps } from '@/api/help.service';
-import HelpCard from '../components/helpCard/HelpCard';
-import Layout from '../components/shared/Layout';
-import PageTitle from '../components/shared/PageTitle';
-import Pagination from '../components/shared/Pagination/Pagination';
+
+import HelpCard from '@/components/HelpCard/HelpCard';
+import Layout from '@/components/shared/Layout';
+import PageTitle from '@/components/shared/PageTitle';
+import Pagination from '@/components/shared/Pagination/Pagination';
+
+import { getHelps } from '@/api/Help';
+import { IHelpListResponse } from '@/models/HelpList';
 
 const NeedHelp = () => {
   const [page, setPage] = useState<number>(1);
