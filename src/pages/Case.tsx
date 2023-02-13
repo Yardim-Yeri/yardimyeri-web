@@ -5,10 +5,10 @@ import { toast } from 'react-hot-toast';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
+import HelpDetailContent from '@/components/HelpDetailContent';
 import Button from '@/components/formElements/button';
-import HelpDetailContent from '@/components/helpDetailContent/HelpDetailContent';
 import Layout from '@/components/shared/Layout';
-import Modal from '@/components/shared/Modal/Modal';
+import Modal from '@/components/shared/Modal';
 import PageTitle from '@/components/shared/PageTitle';
 
 import { IHelpListItem } from '../models/HelpList';

@@ -2,7 +2,7 @@
 
 Yardimlasma platformu
 
-## Guidline
+## Guideline
 
 Those are will checked by Eslint
 
