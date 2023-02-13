@@ -6,6 +6,7 @@ import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import HelpDetailContent from '@/components/HelpDetailContent';
+import Loader from '@/components/Loader';
 import Button from '@/components/formElements/button';
 import Layout from '@/components/shared/Layout';
 import Modal from '@/components/shared/Modal';
@@ -69,6 +70,8 @@ const Case = () => {
 
   return (
     <Layout>
+      {isLoading && <Loader />}
+
       {!isLoading && data ? (
         <>
           <PageTitle title="Yardım Talebi Detayı" />

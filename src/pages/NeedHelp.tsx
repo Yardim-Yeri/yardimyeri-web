@@ -5,6 +5,7 @@ import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
 import HelpCard from '@/components/HelpCard';
+import Loader from '@/components/Loader';
 import Layout from '@/components/shared/Layout';
 import PageTitle from '@/components/shared/PageTitle';
 import Pagination from '@/components/shared/Pagination';
@@ -29,6 +30,8 @@ const NeedHelp = () => {
       <Helmet>
         <title>Yardımyeri.com - Yardımda bulunabilirim</title>
       </Helmet>
+      {isLoading && <Loader />}
+
       <PageTitle title="YARDIMA İHTİYACI OLANLAR" />
       {!isLoading && (
         <>

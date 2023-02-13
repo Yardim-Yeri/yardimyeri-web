@@ -12,6 +12,7 @@ import { useMutation, useQuery } from 'react-query';
 
 import { regexp } from '@/utils/Constants';
 
+import Loader from '@/components/Loader';
 import Button from '@/components/formElements/button';
 import Input from '@/components/formElements/input';
 import InputPhone from '@/components/formElements/input/inputPhone';
@@ -42,14 +43,22 @@ const RequestHelp = () => {
     lng: null,
   };
   const [type, setType] = useState<IRadioValues>();
+
   const methods = useForm<FormData>({
     defaultValues,
     mode: 'onChange',
   });
+
+  const { setValue, reset, clearErrors, handleSubmit, formState, control } =
+    methods;
+
+  const { name, phone_number, how_many_person, need_type } = formState.errors;
+
   const { data: needsData, isLoading: needsLoading } = useQuery<IRadioValues[]>(
     'needs',
     getNeeds,
   );
+
   const formSendMutation = useMutation<
     IResponseType,
     AxiosError<IResponseType>,
@@ -65,15 +74,15 @@ const RequestHelp = () => {
       if (data.success) {
         toast.success(data.message);
       }
-      methods.reset();
-      methods.clearErrors();
+      reset();
+      clearErrors();
     },
   });
 
   const handleTypeChange = (radioValue: IRadioValues) => {
-    methods.setValue('need_type', radioValue.label);
+    setValue('need_type', radioValue.label);
     setType(radioValue);
-    methods.clearErrors('need_type');
+    clearErrors('need_type');
   };
 
   const onSubmit: SubmitHandler<FormData> = (fields) => {
@@ -82,6 +91,7 @@ const RequestHelp = () => {
 
   return (
     <Layout formLayout>
+      {(formSendMutation.isLoading || needsLoading) && <Loader />}
       <Helmet>
         <title>Yardımyeri.com - Yardım talebim var</title>
       </Helmet>
@@ -92,12 +102,12 @@ const RequestHelp = () => {
         <FormProvider {...methods}>
           <form
             className="w-full flex flex-col gap-4"
-            onSubmit={methods.handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <div>
               <Controller
                 name="name"
-                control={methods.control}
+                control={control}
                 rules={{
                   required: 'Bu alan zorunludur.',
                 }}
@@ -108,14 +118,12 @@ const RequestHelp = () => {
                   />
                 )}
               />
-              <span className="text-red-600 text-sm">
-                {methods.formState.errors.name?.message}
-              </span>
+              <span className="text-red-600 text-sm">{name?.message}</span>
             </div>
             <div>
               <Controller
                 name="phone_number"
-                control={methods.control}
+                control={control}
                 rules={{
                   required: 'Bu alan zorunludur.',
                   pattern: {
@@ -126,19 +134,19 @@ const RequestHelp = () => {
                 render={({ field }) => <InputPhone {...field} />}
               />
               <span className="text-red-600 text-sm">
-                {methods.formState.errors.phone_number?.message}
+                {phone_number?.message}
               </span>
             </div>
             <div className="border border-black rounded-md p-4">
               <h4 className="font-semibold mb-4">İhtiyaç Türü</h4>
               {needsLoading ? (
-                <span>Loading...</span>
+                <Loader />
               ) : (
                 needsData && (
                   <>
                     <Controller
                       name="need_type"
-                      control={methods.control}
+                      control={control}
                       rules={{
                         required: 'Bu alan zorunludur.',
                       }}
@@ -152,7 +160,7 @@ const RequestHelp = () => {
                       )}
                     />
                     <span className="text-red-600 text-sm">
-                      {methods.formState.errors.need_type?.message}
+                      {need_type?.message}
                     </span>
                   </>
                 )
@@ -160,7 +168,7 @@ const RequestHelp = () => {
             </div>
             <Controller
               name="need_type_detail"
-              control={methods.control}
+              control={control}
               render={({ field }) => (
                 <Input
                   {...field}
@@ -171,7 +179,7 @@ const RequestHelp = () => {
             <div>
               <Controller
                 name="how_many_person"
-                control={methods.control}
+                control={control}
                 rules={{
                   required: 'Bu alan zorunludur.',
                 }}
@@ -184,7 +192,7 @@ const RequestHelp = () => {
                 )}
               />
               <span className="text-red-600 text-sm">
-                {methods.formState.errors.how_many_person?.message}
+                {how_many_person?.message}
               </span>
             </div>
 
