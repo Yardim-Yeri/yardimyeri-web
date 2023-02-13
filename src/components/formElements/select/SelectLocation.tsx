@@ -117,7 +117,10 @@ const SelectLocation = () => {
   };
 
   const handleStreetChange = (selectValue: any) => {
-    setLocationFields((prevState) => ({ ...prevState, street: selectValue }));
+    setLocationFields((prevState) => ({
+      ...prevState,
+      street_id: selectValue,
+    }));
     dispatchLocation({ type: 'SET_STREET', payload: selectValue.id });
     setValue('street_id', selectValue.id);
   };
