@@ -2,10 +2,12 @@ import moment from 'moment';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
+import Badge from '@/components/Badge';
 import HelpCard from '@/components/HelpCard';
 import Loader from '@/components/Loader';
+import Button from '@/components/formElements/button';
 import Layout from '@/components/shared/Layout';
 import PageTitle from '@/components/shared/PageTitle';
 import Pagination from '@/components/shared/Pagination';
@@ -14,6 +16,7 @@ import { getHelps } from '@/api/Help';
 import { IHelpListResponse } from '@/models/HelpList';
 
 const NeedHelp = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
 
   const { data: helpList, isLoading } = useQuery<IHelpListResponse>(
@@ -23,6 +26,23 @@ const NeedHelp = () => {
 
   const handlePageClick = (selectedPage: number) => {
     setPage(selectedPage);
+  };
+
+  const checkHelpType = (status: string) => {
+    switch (status) {
+      case 'Yardım Bekliyor':
+        return 'error';
+      case 'Yardım Geliyor':
+        return 'info';
+      case 'Yardım Ulaştı':
+        return 'success';
+      default:
+        return 'default';
+    }
+  };
+
+  const goToDetail = (id: number) => {
+    navigate(`/yardimda-bulunabilirim/${id}`);
   };
 
   return (
@@ -70,14 +90,16 @@ const NeedHelp = () => {
                   className="flex flex-col md:flex-row border shadow-md p-4 rounded-md"
                   key={item.id}
                 >
-                  <div className="ggrid-cols-2 lg:grid rid-cols-3 xl:grid-cols-[300px_minmax(500px,_1fr)_150px]  flex-auto">
+                  <div className="lg:grid grid-cols-3 xl:grid-cols-[300px_minmax(500px,_1fr)_150px] flex-auto">
                     <div className="m-2">
                       <p className="font-bold">İsim</p>
                       <p>{name}</p>
                     </div>
                     <div className="m-2">
                       <p className="font-bold">Şehir</p>
-                      <p>{address}</p>
+                      <p className="overflow-hidden whitespace-nowrap text-ellipsis max-w-xl">
+                        {address}
+                      </p>
                     </div>
 
                     <div className="m-2">
@@ -98,15 +120,15 @@ const NeedHelp = () => {
                     </div>
                   </div>
                   <div className="flex gap-2 justify-end sm:justify-center items-center">
-                    <p className="bg-yellow-500 p-2 rounded-md text-white">
-                      {status}
-                    </p>
-                    <Link
-                      to={`/yardimda-bulunabilirim/${id}`}
-                      className="p-2 bg-blue-500 rounded-md text-white"
-                    >
-                      Detaylar
-                    </Link>
+                    <Badge
+                      label={status}
+                      type={checkHelpType(status)}
+                    />
+                    <Button
+                      size="small"
+                      label="Detaylar"
+                      onClick={() => goToDetail(id)}
+                    />
                   </div>
                 </div>
               );

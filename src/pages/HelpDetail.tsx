@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 
+import Badge from '@/components/Badge';
 import HelpDetailContent from '@/components/HelpDetailContent';
 import Loader from '@/components/Loader';
 import Button from '@/components/formElements/button';
@@ -69,6 +70,19 @@ const HelpDetail = () => {
     setIsOpen(true);
   };
 
+  const checkHelpType = (status: string) => {
+    switch (status) {
+      case 'Yardım Bekliyor':
+        return 'error';
+      case 'Yardım Geliyor':
+        return 'info';
+      case 'Yardım Ulaştı':
+        return 'success';
+      default:
+        return 'default';
+    }
+  };
+
   const onSubmit: SubmitHandler<FormData> = (fields) => {
     formSendMutation.mutate(fields);
   };
@@ -98,9 +112,18 @@ const HelpDetail = () => {
         />
       </Helmet>
       {(formSendMutation.isLoading || isLoading) && <Loader />}
-
-      <PageTitle title="Yardım Talebi Detayı" />
-      {!isLoading && (
+      <div className="flex items-center justify-between mb-4">
+        <PageTitle title="Yardım Talebi Detayı" />
+        {data && (
+          <div>
+            <Badge
+              label={data.status}
+              type={checkHelpType(data.status)}
+            />
+          </div>
+        )}
+      </div>
+      {!isLoading && data && (
         <>
           <HelpDetailContent data={data} />
           {data?.status === 'Yardım Bekliyor' && (
