@@ -41,6 +41,11 @@ const HelpDetail = () => {
     mode: 'onChange',
   });
 
+  const { data, isLoading, refetch } = useQuery<IHelpListItem>(
+    ['helpById', id],
+    getHelpsById,
+  );
+
   const formSendMutation = useMutation<
     IResponseType,
     AxiosError<IResponseType>,
@@ -52,19 +57,15 @@ const HelpDetail = () => {
         `(${error.response?.status}) ${error.response?.data?.message}`,
       );
     },
-    onSuccess: (data) => {
+    onSuccess: (resp) => {
+      refetch();
       setIsOpen(false);
-      if (data && data.success) {
-        toast.success(data.message);
+      if (resp && resp.success) {
+        toast.success(resp.message);
       }
       reset();
     },
   });
-
-  const { data, isLoading } = useQuery<IHelpListItem>(
-    ['helpById', id],
-    getHelpsById,
-  );
 
   const handleModalOpen = () => {
     setIsOpen(true);
