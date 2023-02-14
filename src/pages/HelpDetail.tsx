@@ -115,7 +115,7 @@ const HelpDetail = () => {
         />
         <meta
           name="twitter:image"
-          content={`https://api_test.yardimyeri.com/images/${id}.png`}
+          content={`${import.meta.env.VITE_API_KEY}/images/${id}.png`}
         />
       </Helmet>
       {(formSendMutation.isLoading || isLoading) && <Loader />}
