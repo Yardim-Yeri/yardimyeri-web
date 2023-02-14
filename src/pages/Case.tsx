@@ -1,10 +1,11 @@
 import { CheckIcon } from '@heroicons/react/24/solid';
 import { AxiosError } from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
+import Badge from '@/components/Badge';
 import HelpDetailContent from '@/components/HelpDetailContent';
 import Loader from '@/components/Loader';
 import Button from '@/components/formElements/button';
@@ -21,7 +22,6 @@ interface ICaseResponseType {
 }
 const Case = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const [query] = useSearchParams();
   const id = query.get('id');
 
@@ -30,6 +30,9 @@ const Case = () => {
   const { data, isLoading } = useQuery<IHelpListItem>(
     ['caseById', id],
     getCase,
+    {
+      enabled: !!id,
+    },
   );
 
   const successAction = () => {
@@ -39,10 +42,22 @@ const Case = () => {
     }, 3000);
   };
 
+  const checkHelpType = (status: string) => {
+    switch (status) {
+      case 'Yardım Bekliyor':
+        return 'error';
+      case 'Yardım Geliyor':
+        return 'info';
+      case 'Yardım Ulaştı':
+        return 'success';
+      default:
+        return 'default';
+    }
+  };
+
   const finishCase = useQuery<ICaseResponseType, AxiosError, IHelpListItem>(
     ['finishCase', id],
     getFinishCase,
-
     {
       enabled: false,
       onError: (error) => {
@@ -68,14 +83,31 @@ const Case = () => {
     },
   );
 
+  useEffect(() => {
+    if (!id) {
+      navigate('/');
+    }
+  }, [id, navigate]);
+
   return (
     <Layout>
       {isLoading && <Loader />}
 
       {!isLoading && data ? (
         <>
-          <PageTitle title="Yardım Talebi Detayı" />
-          <HelpDetailContent data={data} />
+          <div className="flex items-center justify-between mb-4">
+            <PageTitle title="Yardım Talebi Detayı" />
+            <div>
+              <Badge
+                label={data.status}
+                type={checkHelpType(data.status)}
+              />
+            </div>
+          </div>
+          <HelpDetailContent
+            isPhone
+            data={data}
+          />
           <div className="flex justify-center gap-2 mt-6">
             <Button
               label="Yardımı iptal et"
@@ -83,7 +115,7 @@ const Case = () => {
               type="error"
             />
             <Button
-              label="Yardımı Tamamla"
+              label="Yardımı tamamla"
               onClick={finishCase.refetch}
               type="success"
             />
@@ -92,16 +124,16 @@ const Case = () => {
       ) : (
         <div className="border-t border-gray-200 text-center pt-8">
           <h1 className="text-8xl lg:text-9xl font-bold text-black">404</h1>
-          <h1 className="text-3xl lg:text-6xl font-medium py-8">
-            Talep Bulunamadi.
-          </h1>
+          <h3 className="text-3xl lg:text-6xl font-medium py-8">
+            Talep Bulunamadı.
+          </h3>
           <p className="text-1xl pb-8 px-12 font-medium">
-            Talep tamamlanmiş veya iptal edilmiş olabilir.
+            Talep tamamlanmış veya iptal edilmiş olabilir.
           </p>
-          <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
+          <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
             <Link
               to="/"
-              className="bg-black text-white font-semibold px-6 py-3 rounded-md mr-6"
+              className="bg-black text-white font-semibold px-6 py-3 rounded-md"
             >
               Anasayfa
             </Link>
@@ -109,7 +141,7 @@ const Case = () => {
               to="/yardim-talebim-var"
               className=" bg-black text-white font-semibold px-6 py-3 rounded-md"
             >
-              Yardim Talebi oluştur
+              Yardım talebi oluştur
             </Link>
           </div>
         </div>

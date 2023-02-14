@@ -1,48 +1,85 @@
+import { FC } from 'react';
+
+import Button from '../formElements/button';
+
 import { IHelpListItem } from '@/models/HelpList';
 
-const HelpDetailContent = ({ data }: { data: IHelpListItem | undefined }) => (
-  <>
-    <div className="flex justify-end">
-      <div className="text-base font-bold bg-amber-300 p-4 rounded-lg">
-        {data?.status}
-      </div>
-    </div>
+interface IHelpDetailContentProps {
+  data: IHelpListItem;
+  isPhone?: boolean;
+}
+
+const HelpDetailContent: FC<IHelpDetailContentProps> = ({
+  isPhone = false,
+  data,
+}) => {
+  const replaceRegex = /[^0-9]/g;
+
+  const callNumber = (phone: string) => () => {
+    window.open(`tel:+90${phone.replace(replaceRegex, '')}`);
+  };
+
+  const whatsappNumber = (phone: string) => () => {
+    window.open(`https://wa.me/+90${phone.replace(replaceRegex, '')}`);
+  };
+
+  return (
     <div className="flex flex-col gap-4">
       <div className="shadow-md p-4 rounded">
-        <p className="text-base font-bold">İsim</p>
-        <p className="text-base">{data?.name}</p>
+        <p className="font-bold">İsim</p>
+        <p className="">{data.name}</p>
       </div>
+      {isPhone && (
+        <div className="shadow-md p-4 rounded">
+          <p className=" font-bold">Telefon</p>
+          <div className="flex items-center gap-4">
+            <div>{data.phone_number}</div>
+            <Button
+              size="small"
+              label="Ara"
+              type="info"
+              onClick={callNumber(data.phone_number)}
+            />
+            <Button
+              size="small"
+              label="Whatsapp"
+              type="success"
+              onClick={whatsappNumber(data.phone_number)}
+            />
+          </div>
+        </div>
+      )}
       <div className="shadow-md p-4 rounded">
-        <p className="text-base font-bold">İhtiyaç Türü</p>
-        <p className="text-base"> {data?.need.type}</p>
+        <p className="font-bold">İhtiyaç Türü</p>
+        <p className="">{data.need.type}</p>
       </div>
       {data?.need.detail && (
         <div className="shadow-md p-4 rounded">
-          <p className="text-base font-bold">İhtiyaç Türü Detayı</p>
-          <p className="text-base">{data?.need.detail}</p>
+          <p className="font-bold">İhtiyaç Türü Detayı</p>
+          <p className="">{data.need.detail}</p>
         </div>
       )}
       <div className="shadow-md p-4 rounded">
-        <p className="text-base font-bold">Kaç Kişilik</p>
-        <p className="text-base"> {data?.how_many_person}</p>
+        <p className="font-bold">Kaç Kişilik</p>
+        <p className="">{data.how_many_person}</p>
       </div>
       <div className="shadow-md p-4 rounded">
-        <p className="text-base font-bold">Adres</p>
-        <p className="text-base"> {data?.address}</p>
+        <p className="font-bold">Adres</p>
+        <p className="">{data.address}</p>
       </div>
       {data?.for_directions && (
         <div className="shadow-md p-4 rounded">
-          <p className="text-base font-bold">Adres Tarifi</p>
-          <p className="text-base"> {data?.for_directions}</p>
+          <p className="font-bold">Adres Tarifi</p>
+          <p className="">{data.for_directions}</p>
         </div>
       )}
-      <p className="text-base text-red-600">
+      <p className=" text-red-600">
         Yardıma gidiyorsan veya yardım ettiysen aşağıdaki buton aracılığı ile
         bize bildir. Yardıma ihtiyacı olanlara doğru veriyi aktarabilmemiz için
         gerekli
       </p>
     </div>
-  </>
-);
+  );
+};
 
 export default HelpDetailContent;

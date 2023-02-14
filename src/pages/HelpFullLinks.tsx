@@ -15,7 +15,7 @@ const HelpFullLinks = () => {
 
   return (
     <Layout>
-      <PageTitle title="Yararli Linkler" />
+      <PageTitle title="Yararlı Linkler" />
       {isLoading && <Loader />}
 
       <ol className=" border rounded-lg">

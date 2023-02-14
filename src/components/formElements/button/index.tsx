@@ -36,9 +36,9 @@ const Button: FC<IButtonProps> = ({
   const buttonSize = () => {
     switch (size) {
       case 'small':
-        return 'px-4 py-2';
+        return 'px-4 py-2 text-sm';
       case 'large':
-        return 'px-12 py-8';
+        return 'px-12 py-8 text-lg';
       default:
         return 'px-8 py-4';
     }
