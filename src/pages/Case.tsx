@@ -10,6 +10,7 @@ import HelpDetailContent from '@/components/HelpDetailContent';
 import Loader from '@/components/Loader';
 import Button from '@/components/formElements/button';
 import Layout from '@/components/shared/Layout';
+import Message, { MessageType } from '@/components/shared/Message';
 import Modal from '@/components/shared/Modal';
 import PageTitle from '@/components/shared/PageTitle';
 
@@ -104,6 +105,12 @@ const Case = () => {
               />
             </div>
           </div>
+
+          <Message
+            type={MessageType.INFO}
+            text="Gelecekte bu sayfayı kullanarak yarınızı tamamlayabilir veya iptal edebilirsiniz."
+          />
+
           <HelpDetailContent
             isPhone
             data={data}
