@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useMutation, useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Badge from '@/components/Badge';
 import HelpDetailContent from '@/components/HelpDetailContent';
@@ -32,6 +32,8 @@ const HelpDetail = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { id } = useParams();
 
+  const navigate = useNavigate();
+
   const {
     control,
     formState: { errors },
@@ -57,12 +59,16 @@ const HelpDetail = () => {
         `(${error.response?.status}) ${error.response?.data?.message}`,
       );
     },
-    onSuccess: (resp) => {
+    onSuccess: (resp, variables) => {
+      const base64 = btoa(`${id}?${variables.phone_number}`);
+
       refetch();
       setIsOpen(false);
       if (resp && resp.success) {
         toast.success(resp.message);
+        navigate(`/yardim?id=${base64}`);
       }
+
       reset();
     },
   });
