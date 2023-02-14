@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const instance = axios.create({
-  baseURL: 'https://api.yardimyeri.com/api',
+  baseURL: import.meta.env.VITE_API_KEY,
   headers: {
     'Content-type': 'application/json',
   },
