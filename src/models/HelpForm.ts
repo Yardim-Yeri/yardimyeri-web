@@ -14,7 +14,7 @@ export type FormData = {
   phone_number: string | null;
   need_type: string | null;
   need_type_detail?: string;
-  how_many_person: number | null;
+  how_many_person: string | number | null;
   apartment?: string;
   for_directions?: string;
   province_id: number | undefined;

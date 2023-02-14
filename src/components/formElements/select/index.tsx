@@ -5,13 +5,15 @@ import { FC, Fragment } from 'react';
 import { ISelectValues } from '@/models/HelpForm';
 
 interface ISelectProps {
+  name: string;
   items: ISelectValues[];
-  value: any;
+  value: ISelectValues;
   onChange?: (value?: ISelectValues) => void;
   disabled?: boolean;
 }
 
 const Select: FC<ISelectProps> = ({
+  name,
   items = [],
   disabled,
   value,
@@ -30,6 +32,7 @@ const Select: FC<ISelectProps> = ({
       <div
         className={`${disabled && 'pointer-events-none opacity-60'} relative`}
       >
+        <Listbox.Label>{name}</Listbox.Label>
         <Listbox.Button className="relative w-full cursor-pointer rounded-md p-4 pr-10 text-left bg-black text-white sm:text-sm">
           <span className="block truncate">{value?.name}</span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -58,6 +61,7 @@ const Select: FC<ISelectProps> = ({
                       className={`block truncate ${
                         selected ? 'font-medium' : 'font-normal'
                       }`}
+                      id="sdsdsds"
                     >
                       {item?.name}
                     </span>

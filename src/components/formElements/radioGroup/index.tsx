@@ -5,7 +5,8 @@ import { IRadioValues } from '@/models/HelpForm';
 
 interface IRadioGroupProps {
   items: IRadioValues[];
-  value: IRadioValues | undefined;
+  value: IRadioValues | null;
+  name: string;
   onChange: (value: IRadioValues) => void;
 }
 
@@ -51,44 +52,47 @@ const RadioGroup: FC<IRadioGroupProps> = ({
   items,
   value,
   onChange,
+  name,
   ...props
-}) => (
-  <RG
-    {...props}
-    value={value}
-    onChange={onChange}
-    className="grid grid-cols-2 sm:grid-cols-3 gap-2"
-  >
-    {items.map((item) => (
-      <RG.Option
-        key={item.id}
-        value={item}
-        className={radioClassName}
-      >
-        {({ checked }) => (
-          <div className="flex w-full items-center justify-between">
-            <div className="flex items-center">
-              <div className="text-sm">
-                <RG.Label
-                  as="p"
-                  className={`font-medium  ${
-                    checked ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
-                  {item.label}
-                </RG.Label>
+}) => {
+  return (
+    <RG
+      {...props}
+      value={value}
+      onChange={onChange}
+      className="grid grid-cols-2 sm:grid-cols-3 gap-2"
+    >
+      {items.map((item) => (
+        <RG.Option
+          key={item.id}
+          value={item}
+          className={radioClassName}
+        >
+          {({ checked }) => (
+            <div className="flex w-full items-center justify-between">
+              <div className="flex items-center">
+                <div className="text-sm">
+                  <RG.Label
+                    as="p"
+                    className={`font-medium  ${
+                      checked ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
+                    {item.label}
+                  </RG.Label>
+                </div>
               </div>
+              {checked && (
+                <div className="shrink-0 text-white">
+                  <CheckIcon />
+                </div>
+              )}
             </div>
-            {checked && (
-              <div className="shrink-0 text-white">
-                <CheckIcon />
-              </div>
-            )}
-          </div>
-        )}
-      </RG.Option>
-    ))}
-  </RG>
-);
+          )}
+        </RG.Option>
+      ))}
+    </RG>
+  );
+};
 
 export default RadioGroup;

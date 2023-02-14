@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useQuery } from 'react-query';
 
@@ -16,15 +16,22 @@ import { ISelectValues } from '@/models/HelpForm';
 
 import Select from '.';
 
-interface ISelectValuesState {
-  province_id: ISelectValues | undefined;
-  district_id: ISelectValues | undefined;
-  neighborhood_id: ISelectValues | undefined;
-  street_id: ISelectValues | undefined;
+export interface ISelectValuesState {
+  province_id: ISelectValues | null;
+  district_id: ISelectValues | null;
+  neighborhood_id: ISelectValues | null;
+  street_id: ISelectValues | null;
 }
-
-const SelectLocation = () => {
+interface ISelectLocation {
+  locationFields: ISelectValuesState;
+  setLocationFields: Dispatch<SetStateAction<ISelectValuesState>>;
+}
+const SelectLocation = ({
+  locationFields,
+  setLocationFields,
+}: ISelectLocation) => {
   const defaultValue = { id: 0, name: 'Seçiniz...' };
+
   const {
     control,
     formState: { errors },
@@ -32,12 +39,7 @@ const SelectLocation = () => {
     setError,
     setValue,
   } = useFormContext<ISelectValuesState>();
-  const [locationFields, setLocationFields] = useState<ISelectValuesState>({
-    province_id: undefined,
-    district_id: undefined,
-    neighborhood_id: undefined,
-    street_id: undefined,
-  });
+
   const [, dispatchLocation] = useLocationReducer();
   const { data: provinceData, isLoading: provinceLoading } = useQuery(
     'provinces',
@@ -71,9 +73,9 @@ const SelectLocation = () => {
   const handleProvinceChange = (selectValue: any) => {
     setLocationFields((prevState) => ({
       ...prevState,
-      street_id: undefined,
-      neighborhood_id: undefined,
-      district_id: undefined,
+      street_id: null,
+      neighborhood_id: null,
+      district_id: null,
       province_id: selectValue,
     }));
     dispatchLocation({ type: 'SET_PROVINCE', payload: selectValue.key });
@@ -92,8 +94,8 @@ const SelectLocation = () => {
   const handleDistrictChange = (selectValue: any) => {
     setLocationFields((prevState) => ({
       ...prevState,
-      street_id: undefined,
-      neighborhood_id: undefined,
+      street_id: null,
+      neighborhood_id: null,
       district_id: selectValue,
     }));
     dispatchLocation({ type: 'SET_DISTRICT', payload: selectValue.key });
@@ -108,7 +110,7 @@ const SelectLocation = () => {
   const handleNeighborhoodChange = (selectValue: any) => {
     setLocationFields((prevState) => ({
       ...prevState,
-      street_id: undefined,
+      street_id: null,
       neighborhood_id: selectValue,
     }));
     dispatchLocation({ type: 'SET_NEIGHBORHOOD', payload: selectValue.key });
@@ -145,6 +147,7 @@ const SelectLocation = () => {
                     items={provinceData.data}
                     value={locationFields.province_id || defaultValue}
                     onChange={handleProvinceChange}
+                    name="Şehir"
                   />
                   <span className="text-red-600 text-sm">
                     {errors.province_id?.message}
@@ -164,6 +167,7 @@ const SelectLocation = () => {
             render={({ field }) => (
               <Select
                 {...field}
+                name="İlçe"
                 items={districtsData?.data}
                 value={locationFields.district_id || defaultValue}
                 onChange={handleDistrictChange}
@@ -185,6 +189,7 @@ const SelectLocation = () => {
             render={({ field }) => (
               <Select
                 {...field}
+                name="Mahalle"
                 items={neighborhoodsData?.data}
                 value={locationFields.neighborhood_id || defaultValue}
                 onChange={handleNeighborhoodChange}
@@ -203,6 +208,7 @@ const SelectLocation = () => {
             render={({ field }) => (
               <Select
                 {...field}
+                name="Sokak"
                 items={streetsData?.data}
                 value={locationFields.street_id || defaultValue}
                 onChange={handleStreetChange}
