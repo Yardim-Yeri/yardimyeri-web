@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
@@ -104,7 +103,7 @@ const NeedHelp = () => {
 
                     <div className="m-2">
                       <p className="font-bold">Talep Tarihi</p>
-                      <p>{moment(created_at).format('DD.MM.YYYY HH:MM')}</p>
+                      <p>{created_at}</p>
                     </div>
                     <div className="m-2">
                       <p className="font-bold">Kaç Kişilik</p>
