@@ -112,7 +112,7 @@ const HelpDetail = () => {
         />
       </Helmet>
       {(formSendMutation.isLoading || isLoading) && <Loader />}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between mb-4 ">
         <PageTitle title="Yardım Talebi Detayı" />
         {data && (
           <div>
