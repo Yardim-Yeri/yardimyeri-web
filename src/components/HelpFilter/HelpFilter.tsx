@@ -135,6 +135,7 @@ const HelpFilter = ({
               type="default"
               onClick={() => {
                 refetchHelpList();
+                setIsOpen(false);
               }}
             />
           </div>
