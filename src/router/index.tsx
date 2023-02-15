@@ -8,6 +8,8 @@ const LazyNeedHelp = lazy(() => import('../pages/NeedHelp'));
 const LazyHelpFullLinks = lazy(() => import('../pages/HelpFullLinks'));
 const LazyHelpDetail = lazy(() => import('../pages/HelpDetail'));
 const LazyCaseDetail = lazy(() => import('../pages/Case'));
+const LazyGdpr = lazy(() => import('../pages/Gdpr'));
+const LazyNda = lazy(() => import('../pages/Nda'));
 
 export default [
   {
@@ -33,6 +35,14 @@ export default [
   {
     path: '/yardim',
     element: <LazyCaseDetail />,
+  },
+  {
+    path: '/kvkk',
+    element: <LazyGdpr />,
+  },
+  {
+    path: '/gizlilik-sozlesmesi',
+    element: <LazyNda />,
   },
   {
     path: '*',
