@@ -1,0 +1,1 @@
+import{i as t}from"./index-0e8dd6a7.js";const o=async({queryKey:s})=>(await t.get(`/help?page=${s[1]}`)).data.result,r=async({queryKey:s})=>(await t.get(`/help/${s[1]}`)).data.result,p=async(s,e)=>(await t.post(`/send-helper-form/${s}`,e)).data,c=async s=>(await t.post("/send-help-form",s)).data;export{r as a,p as b,o as g,c as p};
