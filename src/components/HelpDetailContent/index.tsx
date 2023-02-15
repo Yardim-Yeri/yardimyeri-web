@@ -23,6 +23,14 @@ const HelpDetailContent: FC<IHelpDetailContentProps> = ({
     window.open(`https://wa.me/+90${phone.replace(replaceRegex, '')}`);
   };
 
+  const openGoogleMaps = (lat: string, lng: string) => () => {
+    window.open(`https://www.google.com/maps/place/${lat},${lng}`);
+  };
+
+  const openAppleMaps = (lat: string, lng: string) => () => {
+    window.open(`https://maps.apple.com/place?ll=${lat},${lng}`);
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <div className="shadow-md p-4 rounded">
@@ -66,6 +74,22 @@ const HelpDetailContent: FC<IHelpDetailContentProps> = ({
       <div className="shadow-md p-4 rounded">
         <p className="font-bold">Adres</p>
         <p className="">{data.address}</p>
+        {data.lat && data.lng && (
+          <div className="flex pt-1 gap-1">
+            <Button
+              size="small"
+              label="Google Haritalar"
+              type="success"
+              onClick={openGoogleMaps(data.lat, data.lng)}
+            />
+            <Button
+              size="small"
+              label="Apple Haritalar"
+              type="info"
+              onClick={openAppleMaps(data.lat, data.lng)}
+            />
+          </div>
+        )}
       </div>
       {data?.for_directions && (
         <div className="shadow-md p-4 rounded">
