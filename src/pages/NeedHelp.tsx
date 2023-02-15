@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
 import Badge from '@/components/Badge';
 import HelpCard from '@/components/HelpCard';
+import HelpFilter, {
+  IDefaultFilterData,
+  defaultFilterData,
+} from '@/components/HelpFilter/HelpFilter';
 import Loader from '@/components/Loader';
 import Button from '@/components/formElements/button';
 import Layout from '@/components/shared/Layout';
@@ -15,13 +19,33 @@ import { getHelps } from '@/api/Help';
 import { IHelpListResponse } from '@/models/HelpList';
 
 const NeedHelp = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [filterData, setFilterData] =
+    useState<IDefaultFilterData>(defaultFilterData);
+
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
 
-  const { data: helpList, isLoading } = useQuery<IHelpListResponse>(
-    ['help', page],
+  const {
+    data: helpList,
+    isLoading,
+    refetch,
+  } = useQuery<IHelpListResponse>(
+    [
+      'help',
+      page,
+      filterData.ihtiyac_turu?.name,
+      filterData.sehir?.name,
+      filterData.help_status?.name,
+      filterData?.kac_kisilik,
+    ],
     getHelps,
+    { enabled: false, keepPreviousData: true },
   );
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const handlePageClick = (selectedPage: number) => {
     setPage(selectedPage);
@@ -42,6 +66,10 @@ const NeedHelp = () => {
 
   const goToDetail = (id: number) => {
     navigate(`/yardimda-bulunabilirim/${id}`);
+  };
+
+  const handleFilterReset = () => {
+    setFilterData(defaultFilterData);
   };
 
   return (
@@ -70,6 +98,25 @@ const NeedHelp = () => {
               text="Yardım Ulaştırılacak Kişi Sayısı"
               count={helpList?.process_help_count}
               color="blue"
+            />
+          </div>
+          <div className="flex justify-end mt-5">
+            <Button
+              size="small"
+              label="Filtre"
+              type="default"
+              onClick={() => {
+                setIsOpen(true);
+              }}
+            />
+
+            <HelpFilter
+              filterData={filterData}
+              setFilterData={setFilterData}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              handleFilterReset={handleFilterReset}
+              refetchHelpList={refetch}
             />
           </div>
           <div className="mt-6">
@@ -137,6 +184,7 @@ const NeedHelp = () => {
             pageCount={helpList?.meta?.last_page}
             handlePageClick={handlePageClick}
             page={page}
+            refetchHelpList={refetch}
           />
         </>
       )}

@@ -6,10 +6,11 @@ import { ISelectValues } from '@/models/HelpForm';
 
 interface ISelectProps {
   name: string;
-  items: ISelectValues[];
+  items: ISelectValues[] | undefined;
   value: ISelectValues;
   onChange?: (value?: ISelectValues) => void;
   disabled?: boolean;
+  buttonColorType?: 'black' | 'white';
 }
 
 const Select: FC<ISelectProps> = ({
@@ -18,11 +19,16 @@ const Select: FC<ISelectProps> = ({
   disabled,
   value,
   onChange,
+  buttonColorType = 'black',
 }) => {
   const listClassName = ({ active }: { active: boolean }) =>
     `relative cursor-default select-none py-2 pl-10 pr-4 ${
       active ? 'bg-black text-white' : 'text-gray-800'
     }`;
+  const buttonColor =
+    buttonColorType === 'black'
+      ? ' bg-black text-white'
+      : ' bg-white text-black border-black border rounded-md';
 
   return (
     <Listbox
@@ -33,7 +39,9 @@ const Select: FC<ISelectProps> = ({
         className={`${disabled && 'pointer-events-none opacity-60'} relative`}
       >
         <Listbox.Label>{name}</Listbox.Label>
-        <Listbox.Button className="relative w-full cursor-pointer rounded-md p-4 pr-10 text-left bg-black text-white sm:text-sm">
+        <Listbox.Button
+          className={`relative w-full cursor-pointer rounded-md p-4 pr-10 text-left sm:text-sm ${buttonColor} `}
+        >
           <span className="block truncate">{value?.name}</span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronUpDownIcon
