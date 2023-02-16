@@ -5,6 +5,10 @@ import { useNavigate } from 'react-router-dom';
 
 import Badge from '@/components/Badge';
 import HelpCard from '@/components/HelpCard';
+import HelpFilter, {
+  IDefaultFilterData,
+  defaultFilterData,
+} from '@/components/HelpFilter/HelpFilter';
 import Loader from '@/components/Loader';
 import Button from '@/components/formElements/button';
 import Layout from '@/components/shared/Layout';
@@ -15,11 +19,23 @@ import { getHelps } from '@/api/Help';
 import { IHelpListResponse } from '@/models/HelpList';
 
 const NeedHelp = () => {
+  const [queryParams, setQueryParams] =
+    useState<IDefaultFilterData>(defaultFilterData);
+  const [filterData, setFilterData] =
+    useState<IDefaultFilterData>(defaultFilterData);
+
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
 
   const { data: helpList, isLoading } = useQuery<IHelpListResponse>(
-    ['help', page],
+    [
+      'help',
+      page,
+      queryParams.ihtiyac_turu?.name,
+      queryParams.sehir?.name,
+      queryParams.help_status?.name,
+      queryParams?.kac_kisilik,
+    ],
     getHelps,
   );
 
@@ -42,6 +58,14 @@ const NeedHelp = () => {
 
   const goToDetail = (id: number) => {
     navigate(`/yardimda-bulunabilirim/${id}`);
+  };
+
+  const handleFilterSubmit = (data: IDefaultFilterData) => {
+    setQueryParams(data);
+  };
+
+  const handleFilterReset = () => {
+    setQueryParams(defaultFilterData);
   };
 
   return (
@@ -70,6 +94,14 @@ const NeedHelp = () => {
               text="Yardım Ulaştırılacak Kişi Sayısı"
               count={helpList?.process_help_count}
               color="blue"
+            />
+          </div>
+          <div className="flex justify-end mt-5">
+            <HelpFilter
+              filterData={filterData}
+              setFilterData={setFilterData}
+              handleFilterSubmit={handleFilterSubmit}
+              handleFilterReset={handleFilterReset}
             />
           </div>
           <div className="mt-6">

@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { Dispatch, Fragment, ReactNode, SetStateAction } from 'react';
 
-interface IModal {
+export interface IModal {
   children: ReactNode;
   title: string;
   isOpen: boolean;
