@@ -1,4 +1,10 @@
-import React, { BaseSyntheticEvent, Dispatch, SetStateAction } from 'react';
+import {
+  BaseSyntheticEvent,
+  Dispatch,
+  SetStateAction,
+  memo,
+  useState,
+} from 'react';
 import { useQuery } from 'react-query';
 
 import { generateSelectValue } from '@/utils/GenerateSelectData';
@@ -6,7 +12,7 @@ import { generateSelectValue } from '@/utils/GenerateSelectData';
 import Button from '../formElements/button';
 import Input from '../formElements/input';
 import Select from '../formElements/select';
-import Modal, { IModal } from '../shared/Modal';
+import Modal from '../shared/Modal';
 
 import { getProvinces } from '@/api/Location';
 import { getNeeds } from '@/api/Needs';
@@ -29,27 +35,29 @@ type IHelpFilter = {
   filterData: IDefaultFilterData;
   setFilterData: Dispatch<SetStateAction<IDefaultFilterData>>;
   handleFilterReset: () => void;
-  refetchHelpList: any;
-} & Omit<IModal, 'children' | 'title'>;
+  handleFilterSubmit: (data: IDefaultFilterData) => void;
+};
 
 const HelpFilter = ({
   filterData,
   setFilterData,
-  isOpen,
-  setIsOpen,
   handleFilterReset,
-  refetchHelpList,
+  handleFilterSubmit,
 }: IHelpFilter) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const defaultValue = { id: 0, name: 'Seçiniz...' };
   const helpStatus = [
     { id: 0, name: 'Yardım Bekliyor', key: 0 },
     { id: 0, name: 'Yardım Geliyor', key: 0 },
     { id: 0, name: 'Yardım Ulaştı', key: 0 },
   ];
+
   const { data: needsData, isLoading: needsLoading } = useQuery<IRadioValues[]>(
     'needs',
     getNeeds,
   );
+
   const { data: provinceData, isLoading: provinceLoading } = useQuery(
     'provinces',
     getProvinces,
@@ -78,6 +86,14 @@ const HelpFilter = ({
 
   return (
     <div>
+      <Button
+        size="small"
+        label="Filtre"
+        type="default"
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      />
       {isRenderFilter && (
         <Modal
           title="Filtre"
@@ -134,7 +150,7 @@ const HelpFilter = ({
               label="Filtrele"
               type="default"
               onClick={() => {
-                refetchHelpList();
+                handleFilterSubmit(filterData);
                 setIsOpen(false);
               }}
             />
@@ -145,4 +161,4 @@ const HelpFilter = ({
   );
 };
 
-export default HelpFilter;
+export default memo(HelpFilter);

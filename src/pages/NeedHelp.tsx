@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -19,33 +19,25 @@ import { getHelps } from '@/api/Help';
 import { IHelpListResponse } from '@/models/HelpList';
 
 const NeedHelp = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [queryParams, setQueryParams] =
+    useState<IDefaultFilterData>(defaultFilterData);
   const [filterData, setFilterData] =
     useState<IDefaultFilterData>(defaultFilterData);
 
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
 
-  const {
-    data: helpList,
-    isLoading,
-    refetch,
-  } = useQuery<IHelpListResponse>(
+  const { data: helpList, isLoading } = useQuery<IHelpListResponse>(
     [
       'help',
       page,
-      filterData.ihtiyac_turu?.name,
-      filterData.sehir?.name,
-      filterData.help_status?.name,
-      filterData?.kac_kisilik,
+      queryParams.ihtiyac_turu?.name,
+      queryParams.sehir?.name,
+      queryParams.help_status?.name,
+      queryParams?.kac_kisilik,
     ],
     getHelps,
-    { enabled: false, keepPreviousData: true },
   );
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   const handlePageClick = (selectedPage: number) => {
     setPage(selectedPage);
@@ -68,8 +60,12 @@ const NeedHelp = () => {
     navigate(`/yardimda-bulunabilirim/${id}`);
   };
 
+  const handleFilterSubmit = (data: IDefaultFilterData) => {
+    setQueryParams(data);
+  };
+
   const handleFilterReset = () => {
-    setFilterData(defaultFilterData);
+    setQueryParams(defaultFilterData);
   };
 
   return (
@@ -101,22 +97,11 @@ const NeedHelp = () => {
             />
           </div>
           <div className="flex justify-end mt-5">
-            <Button
-              size="small"
-              label="Filtre"
-              type="default"
-              onClick={() => {
-                setIsOpen(true);
-              }}
-            />
-
             <HelpFilter
               filterData={filterData}
               setFilterData={setFilterData}
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
+              handleFilterSubmit={handleFilterSubmit}
               handleFilterReset={handleFilterReset}
-              refetchHelpList={refetch}
             />
           </div>
           <div className="mt-6">
@@ -184,7 +169,6 @@ const NeedHelp = () => {
             pageCount={helpList?.meta?.last_page}
             handlePageClick={handlePageClick}
             page={page}
-            refetchHelpList={refetch}
           />
         </>
       )}
