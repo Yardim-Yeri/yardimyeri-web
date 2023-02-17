@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import {
   Controller,
@@ -115,22 +115,41 @@ const RequestHelp = () => {
     },
   });
 
+  const handleTypeDelete = (radioValue: IRadioValues) => {
+    const filterdSelectedNeedTypes = selectedNeedTypes.filter(
+      (needType) => needType.id !== radioValue.id,
+    );
+
+    setSelectedNeedTypes(filterdSelectedNeedTypes);
+  };
+
   const handleTypeChange = (radioValue: IRadioValues) => {
-    const strNeedTypeValues = selectedNeedTypes
-      .map((item) => item.label)
-      .join(',');
-    setValue('need_type', strNeedTypeValues);
+    const isNeedTypesExist = selectedNeedTypes.some(
+      (item) => item.id === radioValue.id,
+    );
 
-    setSelectedNeedTypes((prevState: IRadioValues[]) => {
-      return [...prevState, radioValue];
-    });
+    if (isNeedTypesExist) {
+      handleTypeDelete(radioValue);
+    } else {
+      setSelectedNeedTypes((prevState: IRadioValues[]) => {
+        return [...prevState, radioValue];
+      });
 
-    clearErrors('need_type');
+      clearErrors('need_type');
+    }
   };
 
   const onSubmit: SubmitHandler<FormData> = (fields) => {
     formSendMutation.mutate(fields);
   };
+
+  useEffect(() => {
+    const strNeedTypeValues = selectedNeedTypes
+      .map((item) => item.label)
+      .join(',');
+
+    setValue('need_type', strNeedTypeValues);
+  }, [selectedNeedTypes]);
 
   return (
     <Layout formLayout>
