@@ -4,7 +4,7 @@ import Error404 from '../pages/Error404';
 
 const LazyHomePage = lazy(() => import('../pages/HomePage'));
 const LazyRequestHelp = lazy(() => import('../pages/RequestHelp'));
-const LazyNeedHelp = lazy(() => import('../pages/NeedHelp'));
+const LazyHelpList = lazy(() => import('../pages/HelpList'));
 const LazyHelpFullLinks = lazy(() => import('../pages/HelpFullLinks'));
 const LazyHelpDetail = lazy(() => import('../pages/HelpDetail'));
 const LazyCaseDetail = lazy(() => import('../pages/Case'));
@@ -22,7 +22,7 @@ export default [
   },
   {
     path: '/yardimda-bulunabilirim',
-    element: <LazyNeedHelp />,
+    element: <LazyHelpList />,
   },
   {
     path: '/yardimda-bulunabilirim/:id',
