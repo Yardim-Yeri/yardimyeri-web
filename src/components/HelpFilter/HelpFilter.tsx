@@ -22,6 +22,7 @@ export interface IDefaultFilterData {
   ihtiyac_turu: ISelectValues | null;
   sehir: ISelectValues | null;
   help_status: ISelectValues | null;
+  order_direction: ISelectValues | null;
   kac_kisilik: string | number | null;
 }
 export const defaultFilterData: IDefaultFilterData = {
@@ -29,6 +30,7 @@ export const defaultFilterData: IDefaultFilterData = {
   sehir: null,
   help_status: null,
   kac_kisilik: null,
+  order_direction: null,
 };
 
 type IHelpFilter = {
@@ -51,6 +53,11 @@ const HelpFilter = ({
     { id: 0, name: 'Yardım Bekliyor', key: 0 },
     { id: 0, name: 'Yardım Geliyor', key: 0 },
     { id: 0, name: 'Yardım Ulaştı', key: 0 },
+  ];
+
+  const sorting = [
+    { id: 0, name: 'Tarihe göre azalan', key: 'desc' },
+    { id: 0, name: 'Tarihe göre artan', key: 'asc' },
   ];
 
   const { data: needsData, isLoading: needsLoading } = useQuery<IRadioValues[]>(
@@ -100,7 +107,16 @@ const HelpFilter = ({
           isOpen={isOpen}
           setIsOpen={setIsOpen}
         >
-          <div className="flex flex-col gap-2 ">
+          <div className="grid sm:grid-cols-2 gap-5">
+            <Select
+              name="Siralama"
+              items={sorting}
+              value={filterData.order_direction || sorting[0]}
+              onChange={(e) => {
+                handleSelectChange(e, 'order_direction');
+              }}
+              buttonColorType="white"
+            />
             <Select
               name="İhtiyaç Türü"
               items={generateSelectValue(needsData)}

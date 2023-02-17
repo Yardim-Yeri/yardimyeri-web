@@ -18,9 +18,10 @@ import Pagination from '@/components/shared/Pagination';
 import { getHelps } from '@/api/Help';
 import { IHelpListResponse } from '@/models/HelpList';
 
-const NeedHelp = () => {
+const HelpList = () => {
   const [queryParams, setQueryParams] =
     useState<IDefaultFilterData>(defaultFilterData);
+
   const [filterData, setFilterData] =
     useState<IDefaultFilterData>(defaultFilterData);
 
@@ -35,6 +36,7 @@ const NeedHelp = () => {
       queryParams.sehir?.name,
       queryParams.help_status?.name,
       queryParams?.kac_kisilik,
+      queryParams.order_direction?.key,
     ],
     getHelps,
   );
@@ -104,6 +106,7 @@ const NeedHelp = () => {
               handleFilterReset={handleFilterReset}
             />
           </div>
+
           <div className="mt-6">
             {helpList?.data.map((item) => {
               const {
@@ -165,6 +168,7 @@ const NeedHelp = () => {
               );
             })}
           </div>
+
           <Pagination
             pageCount={helpList?.meta?.last_page}
             handlePageClick={handlePageClick}
@@ -176,4 +180,4 @@ const NeedHelp = () => {
   );
 };
 
-export default NeedHelp;
+export default HelpList;

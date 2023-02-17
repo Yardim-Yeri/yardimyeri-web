@@ -8,7 +8,9 @@ export const getHelps = async ({ queryKey }: QueryFunctionContext) => {
       queryKey[2] ? queryKey[2] : ''
     }&sehir=${queryKey[3] ? queryKey[3] : ''}&help_status=${
       queryKey[4] ? queryKey[4] : ''
-    }&kac_kisilik=${queryKey[5] ? queryKey[5] : ''}`,
+    }&kac_kisilik=${queryKey[5] ? queryKey[5] : ''}&order_direction=${
+      queryKey[6] ? queryKey[6] : 'desc'
+    }`,
   );
   return response.data.result;
 };
