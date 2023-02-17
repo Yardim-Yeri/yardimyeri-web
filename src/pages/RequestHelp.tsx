@@ -32,7 +32,7 @@ const RequestHelp = () => {
   const defaultValues = {
     name: '',
     phone_number: null,
-    need_type: null,
+    need_type: '',
     need_type_detail: '',
     how_many_person: null,
     apartment: '',
@@ -44,7 +44,10 @@ const RequestHelp = () => {
     lat: null,
     lng: null,
   };
-  const [type, setType] = useState<IRadioValues | null>(null);
+
+  const [selectedNeedTypes, setSelectedNeedTypes] = useState<IRadioValues[]>(
+    [],
+  );
   const [locationFields, setLocationFields] = useState<ISelectValuesState>({
     province_id: null,
     district_id: null,
@@ -61,8 +64,9 @@ const RequestHelp = () => {
     methods;
 
   const { name, phone_number, how_many_person, need_type } = formState.errors;
+
   const formReset = () => {
-    setType(null);
+    setSelectedNeedTypes([]);
     setLocationFields({
       province_id: null,
       district_id: null,
@@ -112,8 +116,15 @@ const RequestHelp = () => {
   });
 
   const handleTypeChange = (radioValue: IRadioValues) => {
-    setValue('need_type', radioValue.label);
-    setType(radioValue);
+    const strNeedTypeValues = selectedNeedTypes
+      .map((item) => item.label)
+      .join(',');
+    setValue('need_type', strNeedTypeValues);
+
+    setSelectedNeedTypes((prevState: IRadioValues[]) => {
+      return [...prevState, radioValue];
+    });
+
     clearErrors('need_type');
   };
 
@@ -185,7 +196,7 @@ const RequestHelp = () => {
                       render={({ field }) => (
                         <RadioGroup
                           {...field}
-                          value={type}
+                          value={selectedNeedTypes}
                           items={needsData}
                           onChange={handleTypeChange}
                         />

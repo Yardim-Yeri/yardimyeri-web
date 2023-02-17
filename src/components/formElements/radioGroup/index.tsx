@@ -5,7 +5,7 @@ import { IRadioValues } from '@/models/HelpForm';
 
 interface IRadioGroupProps {
   items: IRadioValues[];
-  value: IRadioValues | null;
+  value: any; // library multi selection desteklemiyor any olarak biraklim simdilik
   name: string;
   onChange: (value: IRadioValues) => void;
 }
@@ -33,21 +33,6 @@ const CheckIcon = () => (
   </svg>
 );
 
-const radioClassName = ({
-  active,
-  checked,
-}: {
-  active: boolean;
-  checked: boolean;
-}) =>
-  `${
-    active
-      ? 'ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-gray-300'
-      : ''
-  } ${
-    checked ? 'bg-black text-white' : 'bg-white'
-  } relative flex cursor-pointer rounded-md p-4 shadow-md focus:outline-none select-none`;
-
 const RadioGroup: FC<IRadioGroupProps> = ({
   items,
   value,
@@ -62,35 +47,68 @@ const RadioGroup: FC<IRadioGroupProps> = ({
       onChange={onChange}
       className="grid grid-cols-2 sm:grid-cols-3 gap-2"
     >
-      {items.map((item) => (
-        <RG.Option
-          key={item.id}
-          value={item}
-          className={radioClassName}
-        >
-          {({ checked }) => (
+      {items.map((item) => {
+        const isCheckted = value.some(
+          (val: IRadioValues) => val.label === item.label,
+        );
+
+        return (
+          <RG.Option
+            key={item.id}
+            value={item}
+            className={`${
+              isCheckted
+                ? 'ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-gray-300'
+                : ''
+            } ${
+              isCheckted ? 'bg-black text-white' : 'bg-white'
+            } relative flex cursor-pointer rounded-md p-4 shadow-md focus:outline-none select-none`}
+          >
             <div className="flex w-full items-center justify-between">
               <div className="flex items-center">
                 <div className="text-sm">
                   <RG.Label
                     as="p"
                     className={`font-medium  ${
-                      checked ? 'text-white' : 'text-gray-900'
+                      isCheckted ? 'text-white' : 'text-gray-900'
                     }`}
                   >
                     {item.label}
                   </RG.Label>
                 </div>
               </div>
-              {checked && (
+              {isCheckted && (
                 <div className="shrink-0 text-white">
                   <CheckIcon />
                 </div>
               )}
             </div>
-          )}
-        </RG.Option>
-      ))}
+            {/* {({ active, checked }) => {
+              return (
+                <div className="flex w-full items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="text-sm">
+                      <RG.Label
+                        as="p"
+                        className={`font-medium  ${
+                          checked ? 'text-white' : 'text-gray-900'
+                        }`}
+                      >
+                        {item.label}
+                      </RG.Label>
+                    </div>
+                  </div>
+                  {checked && (
+                    <div className="shrink-0 text-white">
+                      <CheckIcon />
+                    </div>
+                  )}
+                </div>
+              );
+            }} */}
+          </RG.Option>
+        );
+      })}
     </RG>
   );
 };
