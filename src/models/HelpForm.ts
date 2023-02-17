@@ -6,7 +6,7 @@ export interface IRadioValues {
 export interface ISelectValues {
   id: number;
   name: string;
-  key?: number;
+  key?: number | string;
 }
 
 export type FormData = {
