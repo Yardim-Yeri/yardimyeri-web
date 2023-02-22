@@ -145,7 +145,7 @@ const Case = () => {
               Anasayfa
             </Link>
             <Link
-              to="/yardim-talebim-var"
+              to="https://deprem.ahbap.org"
               className=" bg-black text-white font-semibold px-6 py-3 rounded-md"
             >
               Yardım talebi oluştur
