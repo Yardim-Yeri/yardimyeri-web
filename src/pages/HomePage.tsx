@@ -19,7 +19,7 @@ const HomePage = () => (
         NE YAPMAK İSTEDİĞİNİZİ SEÇİN
       </p>
       <Link
-        to="/yardim-talebim-var"
+        to="https://deprem.ahbap.org"
         className="bg-black w-3/4 text-white p-6 rounded-full text-center text-sm sm:text-3xl"
       >
         YARDIM TALEBİM VAR
